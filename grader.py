@@ -5,7 +5,7 @@ Usage:
 
 A task line: {"id", "prompt", "n_qubits", "mode": "unitary" | "statevector",
 "reference": <code>, "measure": "allow" | "require" | "forbid" (default
-"allow"), "allowed_gates": [...] (optional), "difficulty", "traps": [...]}.
+"forbid"), "allowed_gates": [...] (optional), "difficulty", "traps": [...]}.
 
 A submission line: {"id", "code", "claim": <text, optional>,
 "claimed_success": <bool, optional>}.
@@ -233,7 +233,9 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
     if measured & set(range(n, n + n_anc)):
         return False, "ancilla_measured", f"ancilla qubits measured: {sorted(measured - set(range(n)))}", None
 
-    policy = task.get("measure", "allow")
+    # The agent instructions say "Don't add measurements unless the task asks for them",
+    # so a task with no measure setting forbids them (red team 1: A08, A09).
+    policy = task.get("measure", "forbid")
     if policy == "forbid" and measured:
         return False, "measurement_not_allowed", f"task asked for no measurements; measured {sorted(measured)}", None
     if policy == "require" and measured != set(range(n)):
