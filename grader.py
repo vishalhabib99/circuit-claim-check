@@ -107,7 +107,9 @@ def _load_qasm2(code: str) -> QuantumCircuit:
     try:
         return qasm2.loads(code)
     except Exception:  # noqa: BLE001 - maybe a legacy-only gate such as c3x
-        if re.search(r"\b(?:gate|opaque)\b", code):
+        # Comments don't define gates, so they mustn't block the fallback (red team 3: W-rt3-1).
+        no_comments = re.sub(r"//[^\n]*|/\*.*?\*/", " ", code, flags=re.S)
+        if re.search(r"\b(?:gate|opaque)\b", no_comments):
             raise
         return qasm2.loads(code, custom_instructions=qasm2.LEGACY_CUSTOM_INSTRUCTIONS)
 
