@@ -41,6 +41,7 @@ from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.quantum_info import Operator, Statevector, state_fidelity
 
 FIDELITY_TOL = 1e-6
+MATRIX_ATOL = 1e-9
 PYTHON_TIMEOUT_S = 60
 RUNNER = Path(__file__).with_name("_runner.py")
 # Ops that never change the quantum state being graded.
@@ -162,6 +163,18 @@ def _is_standard_gate(op) -> bool:
     return std is not None and type(op) is type(std)
 
 
+def _behaves_like_standard(op) -> bool:
+    """True if `op` has the matrix of the standard library gate with its name and params."""
+    std = STANDARD_GATES.get(op.name)
+    if std is None or std.num_qubits != op.num_qubits:
+        return False
+    try:
+        ref = std.base_class(*op.params) if op.params else std.base_class()
+        return np.allclose(Operator(op).data, Operator(ref).data, rtol=0, atol=MATRIX_ATOL)
+    except Exception:  # noqa: BLE001 - unbound params, no matrix, odd signature
+        return False
+
+
 def _final_measure_split(qc: QuantumCircuit) -> tuple[QuantumCircuit, set[int]]:
     """Return (circuit without final measurements, qubits measured at the end).
 
@@ -232,6 +245,17 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
         extra = _gate_names(sub_u) - set(allowed)
         if extra:
             return False, "disallowed_gate", f"uses {sorted(extra)}; allowed {sorted(allowed)}", None
+        # A name proves nothing: `gate cx a,b { cz a,b; }` is still a CZ (red team 1: A05, A06).
+        for inst in sub_u.data:
+            if inst.operation.name in IGNORED_OPS:
+                continue
+            if not _behaves_like_standard(inst.operation):
+                return False, "disallowed_gate", f"`{inst.operation.name}` is redefined and doesn't act like the standard gate", None
+    max_gates = task.get("max_gates")
+    if max_gates is not None:
+        count = sum(1 for inst in sub_u.data if inst.operation.name not in IGNORED_OPS)
+        if count > max_gates:
+            return False, "too_many_gates", f"{count} gates; the task allows {max_gates}", None
 
     ref, _ = _final_measure_split(load_circuit(task["reference"]))
     mode = task["mode"]
