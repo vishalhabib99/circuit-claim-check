@@ -1,0 +1,10 @@
+{"id": "v21", "n_qubits": 3, "prompt": "Implement the bit-flip oracle for f(x) = x0 OR x1: |x0, x1, y> -> |x0, x1, y XOR f(x)>, with x0 on q[0], x1 on q[1] and y on q[2]."}
+{"id": "v22", "n_qubits": 1, "prompt": "Implement the single-qubit unitary U = RZ(pi/2) * RY(pi/3) (a matrix product)."}
+{"id": "v23", "n_qubits": 1, "prompt": "Implement the Hadamard gate using only RX and RZ rotations. Global phase does not matter."}
+{"id": "v24", "n_qubits": 2, "prompt": "Implement RZZ(pi/3) on q[0] and q[1] using only CX and RZ gates."}
+{"id": "v25", "n_qubits": 2, "prompt": "Implement the iSWAP gate on q[0] and q[1] using only S, H and CX gates."}
+{"id": "v26", "n_qubits": 1, "prompt": "Prepare cos(pi/8)|0> + e^(i*pi/4) sin(pi/8)|1>."}
+{"id": "v27", "n_qubits": 2, "prompt": "Apply a controlled-Hadamard with control q[0] and target q[1]."}
+{"id": "v28", "n_qubits": 3, "prompt": "Prepare the GHZ state (|000> + |111>)/sqrt(2) on q[0..2], then measure all three qubits into a 3-bit classical register."}
+{"id": "v29", "n_qubits": 3, "prompt": "Swap q[0] and q[2] using only CX gates, at most 3 of them."}
+{"id": "v30", "n_qubits": 4, "prompt": "Prepare the 4-qubit Dicke state D(4,2): the equal superposition of all six basis states with exactly two 1s."}

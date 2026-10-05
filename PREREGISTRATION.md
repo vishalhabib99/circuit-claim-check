@@ -146,6 +146,16 @@ Run 1 (Sonnet) passed v1 45/45, so v1 can't show whether self-checking helps. v2
 
 Run 4's batch 1 drafts all set a circuit label (`qc.name = "v02"`). The Python subset from fix 12 refused every attribute assignment, so these drafts couldn't be loaded, though Qiskit runs them fine. That is a false fail, and it would have made the condition B feedback something other than "what Qiskit shows". 15. `x.name = "<string>"` is allowed. Nothing else changes: it gives a submission nothing `copy(name=...)` didn't already allow, and operations have been matched by class since fix 14. Other attribute assignments are still refused (tests in `tests/test_redteam1.py`). The three drafts were hashed (`runs/run4/drafts.sha256`) and committed with this fix, before any feedback was generated. Re-grading run 3 and runs 1-2 with fix 15 changed no verdict, so run 3 is reported once.
 
+## Amendment 9 (2026-10-05, after runs 3-4, before run 5): Sonnet in condition B
+
+Run 4 (Haiku) did not support H9: false success claims went from 6 (draft) to 8 (final). The obvious question is whether that's a Haiku limitation. Approved by Vishal:
+
+**Run 5:** Claude Sonnet, condition B, exactly the run 4 protocol (same v2 tasks, `runs/instructions_B.md`, 3 fresh agents × 10 tasks, draft → `scripts/exec_feedback.py` output → final, two Write calls per agent). Grader and feedback script at the commit recorded in `runs/run5/NOTES.md`; drafts hashed and committed before any feedback is generated. No condition A run for Sonnet: the draft is the no-feedback baseline, as in run 4.
+
+- **H13:** Sonnet's B-final has at most half as many false success claims as its B-draft (H9 for Sonnet). Not testable if the draft has fewer than 2.
+- **H14:** Sonnet changes at least half of its wrong drafts after feedback (Haiku changed 2 of 6 of the ones it claimed, and kept 4 identical).
+- Reported side by side with run 4, as counts. Two models and 30 tasks can't support a general claim about models; the comparison says only what these two did on this set.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.
