@@ -55,13 +55,13 @@ The blind set's mutants and variants were committed (8dcb32a) before the grader 
 - Blind task text is not edited.
 - If an agent run exposes a grader bug, the fix gets its own commit, the bug is logged, and **every affected result is reported both before and after the fix**.
 
-## Amendment 1 (2026-10-05, before any agent run): ancilla rule and run setup
+## Amendment 1 (2026-10-04, before any agent run): ancilla rule and run setup
 
 **Ancillas.** q[0..n-1] are the task's qubits. Up to 3 extra qubits after them are allowed if they start in |0>, end in |0> for every input (unitary tasks: the block of the full unitary that maps ancilla-|0> inputs to ancilla-non-|0> outputs must be zero; state tasks: no amplitude may remain on ancilla-non-|0> states), and are never measured. New failure reasons: `too_many_ancillas`, `dirty_ancilla`, `ancilla_measured`. Fewer than n qubits is still `wrong_qubit_count`. Decided by Vishal before any agent output existed. The grader validation was re-run on the blind set with this rule, and the results were unchanged: references 15/15, mutants 30/30, variants 15/15 (`evals/blind_grader_check_ancilla_rule.txt`).
 
-**Run 1 (approved by Vishal 2026-10-05):** condition A only, one model (Claude Sonnet via Claude Code subagents, Pro plan), all 45 tasks, one attempt each, in 3 batches of 15 (pilot p01-p15, pilot p16-p30, blind b01-b15). Each subagent sees only the task id, `prompt` and `n_qubits`, plus fixed instructions (`runs/instructions.md`). It may make exactly one tool call, writing its answers file, and no other tool calls, so it can't run code or read the repo. The tool-call count reported for each subagent is logged in the run notes as evidence. Graded once, at the grader commit recorded in `runs/run1/NOTES.md`.
+**Run 1 (approved by Vishal 2026-10-04):** condition A only, one model (Claude Sonnet via Claude Code subagents, Pro plan), all 45 tasks, one attempt each, in 3 batches of 15 (pilot p01-p15, pilot p16-p30, blind b01-b15). Each subagent sees only the task id, `prompt` and `n_qubits`, plus fixed instructions (`runs/instructions.md`). It may make exactly one tool call, writing its answers file, and no other tool calls, so it can't run code or read the repo. The tool-call count reported for each subagent is logged in the run notes as evidence. Graded once, at the grader commit recorded in `runs/run1/NOTES.md`.
 
-## Amendment 2 (2026-10-05, after run 1, before run 2 and red team 1)
+## Amendment 2 (2026-10-04, after run 1, before run 2 and red team 1)
 
 Run 1 (Sonnet) passed 45/45 with 0 false success claims (`runs/run1/RESULTS.md`). Two follow-ups, approved by Vishal:
 
@@ -72,7 +72,7 @@ Run 1 (Sonnet) passed 45/45 with 0 false success claims (`runs/run1/RESULTS.md`)
 
 **Red team 1 (grader).** One agent with the grader code open and permission to run it tries to get a *wrong* circuit graded `pass` on any task. A finding counts only if the circuit's wrongness is shown independently of `grader.py` (an explicit matrix or state computation compared with the task text) and I can reproduce it. Bar: 0 wrong circuits graded `pass`. Any confirmed finding is a grader bug, logged with before/after under the "Changes after results" rule. Run 1's 45 answers are re-graded after any fix.
 
-## Amendment 3 (2026-10-05): grader fixes from red team 1
+## Amendment 3 (2026-10-04): grader fixes from red team 1
 
 Red team 1 got 16 wrong circuits graded `pass` (`runs/redteam1/FINDINGS.md`). Fixed in commits 3266c1b..this one, one commit per class, with every attack kept as a regression test (`tests/test_redteam1.py`):
 1. one crashing submission no longer stops the run; clear error for QASM with no version line (W1)
@@ -87,7 +87,7 @@ Red team 1 got 16 wrong circuits graded `pass` (`runs/redteam1/FINDINGS.md`). Fi
 
 **Red team 2** runs against the fixed grader under the same bar as red team 1 (0 confirmed wrong-passes, each one shown wrong independently of `grader.py`). It gets red team 1's findings, so it knows what has already been tried.
 
-## Amendment 4 (2026-10-05): grader fixes from red team 2
+## Amendment 4 (2026-10-04): grader fixes from red team 2
 
 Red team 2 got 3 wrong circuits graded `pass`, all through gaps in the red team 1 fixes (`runs/redteam2/FINDINGS.md`):
 10. QASM 2 is parsed faithfully first. Qiskit's legacy gate set is used only as a fallback, for a program that defines no gates of its own. This replaces the gate-name regex that a same-line definition got past (RT2-02).
@@ -95,9 +95,9 @@ Red team 2 got 3 wrong circuits graded `pass`, all through gaps in the red team 
 
 Re-graded both runs: no verdict changed, and no real answer was rejected by the Python subset (`runs/*/answers*_regraded_after_rt2.txt`).
 
-**Red team 3** (approved by Vishal 2026-10-05) runs against grader 4054378 under the same bar: 0 confirmed wrong-passes, each one shown wrong independently of `grader.py`. It gets both earlier findings files. If it finds 0, the README may say the grader passed a red team. If it finds any, they get fixed and reported the same way, and the claim stays unmade.
+**Red team 3** (approved by Vishal 2026-10-04) runs against grader 4054378 under the same bar: 0 confirmed wrong-passes, each one shown wrong independently of `grader.py`. It gets both earlier findings files. If it finds 0, the README may say the grader passed a red team. If it finds any, they get fixed and reported the same way, and the claim stays unmade.
 
-## Amendment 5 (2026-10-05): grader fixes from red team 3
+## Amendment 5 (2026-10-04): grader fixes from red team 3
 
 Red team 3 got 3 wrong circuits graded `pass` (`runs/redteam3/FINDINGS.md`). The Python submission read the runner's output path and nonce from stdin before the runner did, wrote the correct circuit itself, printed the runner's success line and raised `SystemExit`. It also found a false fail: a comment containing "gate" blocked the QASM 2 legacy-gate fallback.
 
