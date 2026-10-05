@@ -1,0 +1,9 @@
+; macOS sandbox profile for Python submissions (see grader.py, _runner.py).
+; No network, no new processes, no file writes except a throwaway scratch
+; directory that the grader never reads from.
+(version 1)
+(allow default)
+(deny network*)
+(deny process-fork)
+(deny file-write*)
+(allow file-write* (literal "/dev/null") (subpath (param "SCRATCH")))

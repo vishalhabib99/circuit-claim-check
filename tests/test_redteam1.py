@@ -100,3 +100,47 @@ def test_ordinary_python_answer_still_passes():
             "qc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.rz(2 * math.pi, 0)\nqc.rz(np.pi * 0, 1)\n")
     passed, reason, detail, _ = grader.grade_one(TASKS["p06"], code)
     assert passed, f"{reason} {detail}"
+
+
+# --- red team 3 (runs/redteam3/FINDINGS.md) --------------------------------
+
+RT3_ATTACKS = grader.load_jsonl(RT.parent / "redteam3" / "attacks.jsonl")
+
+
+@pytest.mark.parametrize("attack", RT3_ATTACKS, ids=[f"RT3-0{i + 1}" for i in range(len(RT3_ATTACKS))])
+def test_redteam3_attack_fails(attack):
+    passed, reason, detail, _ = grader.grade_one(TASKS[attack["id"]], attack["code"])
+    assert not passed, f"still passes: {reason} {detail}"
+
+
+def test_qasm2_legacy_gate_with_the_word_gate_in_a_comment_passes():
+    # W-rt3-1: a comment must not block the legacy-gate fallback.
+    code = 'OPENQASM 2.0;\n// this gate is great\nqreg q[2]; // opaque too\nrzz(pi/4) q[0],q[1];\n'
+    passed, reason, detail, _ = grader.grade_one(TASKS["p20"], code)
+    assert passed, f"{reason} {detail}"
+
+
+@pytest.mark.parametrize("code", [
+    "from qiskit import QuantumCircuit\nclass G: pass\nqc = QuantumCircuit(2); qc.cx(1, 0)\n",
+    "from qiskit import QuantumCircuit\nimport qiskit.qpy\nqc = QuantumCircuit(2); qc.cx(1, 0)\n",
+    "from qiskit import QuantumCircuit, qpy\nqc = QuantumCircuit(2); qc.cx(1, 0)\n",
+    "import qiskit\nfrom qiskit import QuantumCircuit\nqiskit.QuantumCircuit.cx = None\nqc = QuantumCircuit(2)\n",
+    "from qiskit import QuantumCircuit\nimport numpy as np\nqc = QuantumCircuit(2); qc.cx(1, 0)\nnp.zeros(1).tofile('x')\n",
+])
+def test_python_new_subset_rules(code):
+    passed, reason, detail, _ = grader.grade_one(TASKS["p06"], code)
+    assert (passed, reason) == (False, "disallowed_python"), f"{reason} {detail}"
+
+
+def test_python_exit_inside_submission_fails():
+    code = "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\nprint('RUNNER_OK x')\nraise SystemExit(0)\n"
+    passed, reason, _, _ = grader.grade_one(TASKS["p06"], code)
+    assert (passed, reason) == (False, "parse_error")
+
+
+def test_python_is_refused_without_a_sandbox(monkeypatch):
+    monkeypatch.setattr(grader, "SANDBOX_EXEC", None)
+    monkeypatch.delenv("CIRCUIT_GRADER_TRUST_PYTHON", raising=False)
+    code = "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\n"
+    passed, reason, _, _ = grader.grade_one(TASKS["p06"], code)
+    assert (passed, reason) == (False, "python_needs_sandbox")

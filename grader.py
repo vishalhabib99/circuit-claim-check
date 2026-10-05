@@ -25,10 +25,12 @@ from __future__ import annotations
 
 import argparse
 import ast
+import base64
+import io
 import json
 import os
 import re
-import secrets
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -44,6 +46,8 @@ from qiskit.quantum_info import Operator, Statevector, state_fidelity
 MATRIX_ATOL = 1e-9
 PYTHON_TIMEOUT_S = 60
 RUNNER = Path(__file__).with_name("_runner.py")
+SANDBOX_PROFILE = Path(__file__).with_name("_sandbox.sb")
+SANDBOX_EXEC = shutil.which("sandbox-exec")
 # Ops that never change the quantum state being graded.
 IGNORED_OPS = {"barrier", "delay"}
 # Ancilla rule (added before any agent run; see PREREGISTRATION.md): qubits
@@ -119,24 +123,33 @@ def _looks_like_qasm(text: str) -> bool:
     return first.startswith(("include ", "qreg ", "qubit[", "qubit ", "gate ", "creg "))
 
 
-# Python submissions must stay inside a small subset, checked before they run.
-# Red team 2 showed that a submission sharing the runner's interpreter can walk
-# the call stack (RT2-01) or register exit handlers (RT2-03) to swap the graded
-# circuit. Blocking imports outside this list, names that reach the
-# interpreter, and underscore/frame attributes closes those routes. It's still
-# not a sandbox; see README.
+# Python submissions are checked against a small subset before they run, then
+# run under the macOS sandbox (_sandbox.sb: no file writes outside a throwaway
+# scratch dir, no new processes, no network) with stdin closed. Red teams 1-3
+# swapped the graded circuit from inside the runner's interpreter by writing
+# its output file, walking the call stack, exit handlers, and reading stdin
+# (A03, A04, RT2-01, RT2-03, RT3-01..03); the subset is defense in depth, the
+# sandbox and the stdout-only channel are what close those routes.
 PY_ALLOWED_IMPORTS = {"qiskit", "math", "cmath", "numpy", "fractions"}
 PY_DENIED_NAMES = {
     "open", "exec", "eval", "compile", "__import__", "getattr", "setattr", "delattr",
     "globals", "locals", "vars", "breakpoint", "input", "memoryview", "help", "exit", "quit",
 }
 PY_DENIED_ATTRS = {
+    # serializer and numpy file I/O (red team 3: RT3-01..03 used loadtxt/tofile)
+    "qpy", "tofile", "fromfile", "loadtxt", "savetxt", "genfromtxt", "fromregex", "load", "save",
+    "savez", "savez_compressed", "memmap", "ctypeslib", "f2py", "DataSource",
     "f_back", "f_locals", "f_globals", "f_builtins", "f_code", "gi_frame", "cr_frame", "ag_frame",
     "tb_frame", "tb_next", "gi_code", "co_code",
     "sys", "os", "atexit", "threading", "inspect", "builtins", "importlib", "subprocess", "ctypes",
     "gc", "signal", "io", "pathlib", "shutil", "tempfile", "pickle", "marshal", "multiprocessing",
     "socket", "runpy", "weakref", "traceback", "faulthandler", "resource",
 }
+
+
+def _module_allowed(name: str) -> bool:
+    parts = name.split(".")
+    return parts[0] in PY_ALLOWED_IMPORTS and not any(p.startswith("_") or p in PY_DENIED_ATTRS for p in parts[1:])
 
 
 def _check_python_subset(code: str) -> None:
@@ -147,10 +160,9 @@ def _check_python_subset(code: str) -> None:
     for node in ast.walk(tree):
         bad = None
         if isinstance(node, ast.Import):
-            bad = next((a.name for a in node.names if a.name.split(".")[0] not in PY_ALLOWED_IMPORTS), None)
+            bad = next((a.name for a in node.names if not _module_allowed(a.name)), None)
         elif isinstance(node, ast.ImportFrom):
-            root = (node.module or "").split(".")[0]
-            if node.level or root not in PY_ALLOWED_IMPORTS:
+            if node.level or not _module_allowed(node.module or ""):
                 bad = node.module or "relative import"
             else:
                 bad = next((a.name for a in node.names if a.name.startswith("_") or a.name in PY_DENIED_ATTRS or a.name == "*"), None)
@@ -158,36 +170,47 @@ def _check_python_subset(code: str) -> None:
             bad = node.id
         elif isinstance(node, ast.Attribute) and (node.attr.startswith("_") or node.attr in PY_DENIED_ATTRS):
             bad = f".{node.attr}"
+        elif isinstance(node, ast.ClassDef):
+            bad = f"class {node.name}"
+        elif isinstance(node, (ast.Assign, ast.AugAssign, ast.AnnAssign, ast.Delete)):
+            targets = node.targets if isinstance(node, (ast.Assign, ast.Delete)) else [node.target]
+            if any(isinstance(t, ast.Attribute) for tg in targets for t in ast.walk(tg)):
+                bad = "assignment to an attribute"
         if bad:
             raise GradeError("disallowed_python", f"`{bad}` is outside the allowed Python subset (imports: {sorted(PY_ALLOWED_IMPORTS)})")
 
 
 def _run_python(code: str) -> QuantumCircuit:
     _check_python_subset(code)
-    # The output goes to a second temp dir outside the submission's working directory.
-    with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as out_tmp:
-        src = Path(tmp) / "submission.py"
-        out = Path(out_tmp) / f"{secrets.token_hex(16)}.qpy"
-        nonce = secrets.token_hex(16)
+    if SANDBOX_EXEC is None and os.environ.get("CIRCUIT_GRADER_TRUST_PYTHON") != "1":
+        raise GradeError("python_needs_sandbox", "Python submissions are graded only inside the macOS sandbox "
+                         "(sandbox-exec not found); set CIRCUIT_GRADER_TRUST_PYTHON=1 to grade cooperative code without it")
+    with tempfile.TemporaryDirectory() as tmp:
+        scratch = os.path.realpath(tmp)
+        src = Path(scratch) / "submission.py"
         src.write_text(code)
-        env = {"PATH": os.environ.get("PATH", ""), "PYTHONHASHSEED": "0"}
+        env = {"PATH": os.environ.get("PATH", ""), "PYTHONHASHSEED": "0", "TMPDIR": scratch,
+               "PYTHONDONTWRITEBYTECODE": "1"}
+        cmd = [sys.executable, "-I", "-B", str(RUNNER), str(src)]
+        if SANDBOX_EXEC is not None:
+            cmd = [SANDBOX_EXEC, "-D", f"SCRATCH={scratch}", "-f", str(SANDBOX_PROFILE)] + cmd
         try:
-            proc = subprocess.run(
-                [sys.executable, "-I", str(RUNNER), str(src)],
-                input=f"{out}\n{nonce}\n", cwd=tmp, env=env, capture_output=True, text=True,
-                timeout=PYTHON_TIMEOUT_S,
-            )
+            proc = subprocess.run(cmd, stdin=subprocess.DEVNULL, cwd=scratch, env=env,
+                                  capture_output=True, text=True, timeout=PYTHON_TIMEOUT_S)
         except subprocess.TimeoutExpired as e:
             raise GradeError("timeout", f"Python submission ran over {PYTHON_TIMEOUT_S}s") from e
         if proc.returncode != 0:
             tail = (proc.stderr.strip().splitlines() or ["(no stderr)"])[-1]
             raise GradeError("parse_error", f"Python: {tail}")
-        # The runner prints this only after it serialized `qc` itself, so an early
-        # exit or a file written by the submission doesn't count (red team 1: A03).
-        if (proc.stdout.strip().splitlines() or [""])[-1] != f"RUNNER_OK {nonce}" or not out.exists():
+        # The runner prints this as its very last act, after the submission has
+        # finished, then exits; nothing the submission printed can come after it.
+        last = (proc.stdout.strip().splitlines() or [""])[-1]
+        if not last.startswith("RUNNER_OK "):
             raise GradeError("parse_error", "Python: runner did not finish normally")
-        with out.open("rb") as f:
-            circuits = qpy.load(f)
+        try:
+            circuits = qpy.load(io.BytesIO(base64.b64decode(last[len("RUNNER_OK "):], validate=True)))
+        except Exception as e:  # noqa: BLE001
+            raise GradeError("parse_error", f"Python: unreadable runner output ({type(e).__name__})") from e
         return circuits[0]
 
 

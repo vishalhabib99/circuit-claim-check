@@ -97,6 +97,16 @@ Re-graded both runs: no verdict changed, and no real answer was rejected by the 
 
 **Red team 3** (approved by Vishal 2026-10-05) runs against grader 4054378 under the same bar: 0 confirmed wrong-passes, each one shown wrong independently of `grader.py`. It gets both earlier findings files. If it finds 0, the README may say the grader passed a red team. If it finds any, they get fixed and reported the same way, and the claim stays unmade.
 
+## Amendment 5 (2026-10-05): grader fixes from red team 3
+
+Red team 3 got 3 wrong circuits graded `pass` (`runs/redteam3/FINDINGS.md`). The Python submission read the runner's output path and nonce from stdin before the runner did, wrote the correct circuit itself, printed the runner's success line and raised `SystemExit`. It also found a false fail: a comment containing "gate" blocked the QASM 2 legacy-gate fallback.
+
+Three rounds have now beaten the Python runner from inside the same interpreter, so this fix changes the design instead of patching one more route:
+12. Python runs under the macOS sandbox (`_sandbox.sb`: no network, no new processes, no file writes outside a throwaway scratch directory) with stdin closed. No path or nonce is passed in. The circuit comes back only as the runner's last stdout line, printed after the submission finishes, followed by `os._exit`. Any exception from the submission, `SystemExit` included, fails it. The subset also now bans classes, attribute assignment, `qpy`, and numpy file I/O. Without `sandbox-exec`, Python is refused unless `CIRCUIT_GRADER_TRUST_PYTHON=1`.
+13. Comments are stripped before the QASM 2 fallback looks for `gate`/`opaque` (W-rt3-1).
+
+Re-graded both runs: no verdict changed. All 22 confirmed attacks from red teams 1-3 now fail (`runs/*/answers*_regraded_after_rt3.txt`).
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.
