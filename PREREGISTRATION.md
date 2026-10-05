@@ -107,6 +107,8 @@ Three rounds have now beaten the Python runner from inside the same interpreter,
 
 Re-graded both runs: no verdict changed. All 22 confirmed attacks from red teams 1-3 now fail (`runs/*/answers*_regraded_after_rt3.txt`).
 
+**Red team 4** (approved by Vishal 2026-10-05) runs against grader 1bc747a (fixes 12 and 13) under the same bar: 0 confirmed wrong-passes, each one shown wrong independently of `grader.py`. It gets all three earlier findings files. If it finds 0, the README may say the grader passed a red team. If it finds any, they get fixed and reported the same way, and the claim stays unmade.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.
