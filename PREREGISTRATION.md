@@ -117,6 +117,31 @@ Red team 4 got 5 wrong circuits graded `pass` (`runs/redteam4/FINDINGS.md`). A P
 
 Re-graded both runs: no verdict changed (`runs/*/answers*_regraded_after_rt4.txt`). All 27 confirmed attacks from red teams 1-4 now fail; 212 tests pass.
 
+## Amendment 7 (2026-10-05, before any agent sees a v2 task): v2 task set and condition B
+
+Run 1 (Sonnet) passed v1 45/45, so v1 can't show whether self-checking helps. v2 asks that question on harder tasks.
+
+**v2 task set (30 tasks, `tasks/v2.jsonl`, written by `scripts/make_v2.py`).** Harder instances of the same trap categories, aimed at mistakes models make: Qiskit bit order, inverse vs forward QFT, CRZ vs CP, operator order in a matrix product, mixed-polarity controls, and gate-set limits (11 tasks) that force a decomposition instead of a library call. Grader validation before any agent run (`evals/v2_grader_check.txt`): references 30/30, mutants 60/60 killed, variants 30/30. For the 11 gate-limited tasks the reference is itself a decomposition, so `make_v2.py` also checks each one against the named gate with `qiskit.quantum_info`, without `grader.py`. Task text is not edited after this commit. One task was replaced before this commit: the first v17 needed an ancilla in its reference, which the grader doesn't support for references, so it became a CCZ-from-Toffoli task.
+
+**Conditions (one model: Claude Haiku via Claude Code subagents, Pro plan; each run needs Vishal's approval):**
+- **Run 3, condition A:** the v1 protocol on v2. Instructions `runs/instructions.md`, 3 batches of 10, one Write call per agent.
+- **Run 4, condition B:** fresh agents, never the run 3 agents. Instructions `runs/instructions_B.md`, 3 batches of 10. Each agent writes a **draft** (code, claim, claimed_success), then gets the output of `scripts/exec_feedback.py` on its own draft: gates, measurements, and what the circuit does (output state, or output for every basis input). It never sees the reference or a verdict. Then it writes its **final** answers. Exactly two Write calls per agent, checked from the transcripts. Run 3 goes first.
+
+**Metrics.** Graded once by `grader.py` at the commit recorded in each run's notes.
+1. **False success claims (headline):** answers with `claimed_success: true` that fail. Compared B-draft vs B-final (same agents, same tasks: the effect of feedback) and A vs B-final.
+2. Pass count, overall and by trap category (counts only).
+3. Revisions in B: tasks changed after feedback, fixed (fail → pass), broken (pass → fail).
+4. Format failures (`parse_error`) reported separately. **Secondary, decided now:** re-grade with a missing `OPENQASM 2.0;` line added and nothing else changed (the run 2 post hoc check, preregistered this time).
+
+**Hypotheses:**
+- **H8:** A passes at most 27 of 30. If A passes 28 or more, v2 is too easy for Haiku, and H9-H12 are reported but not taken as evidence.
+- **H9 (main):** B-final has at most half as many false success claims as B-draft. Not testable if B-draft has fewer than 2.
+- **H10:** B-final has at most half as many false success claims as A.
+- **H11:** B-final passes more tasks than B-draft, and fixes outnumber breaks.
+- **H12:** of the B-draft false claims that go away, at least half go away because the circuit now passes, not because the agent switched to `claimed_success: false`.
+
+**What 30 tasks can show.** Pass/fail differences are tested with an exact McNemar test on the discordant pairs, two-sided, and reported with the counts. With 30 tasks only a large effect will show up, so a null result means "no large effect", not "no effect". A and B use different agent instances, so A vs B mixes feedback with run-to-run variation; B-draft vs B-final is the cleaner comparison. One round of feedback is not open-ended tool use. The tasks and the agents are from the same model family.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.

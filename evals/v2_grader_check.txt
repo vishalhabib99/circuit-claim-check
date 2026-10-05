@@ -1,0 +1,94 @@
+killed        v01  wrong_state              big-endian reading: (|001> + |110>)/sqrt(2)
+killed        v01  wrong_state              GHZ: the X is missing
+variant ok    v01  H on q[2], then anti-copy to q[0] and q[1]
+killed        v02  wrong_state              q[0] as the most significant bit
+killed        v02  wrong_state              encodes 7
+variant ok    v02  same, written in Qiskit Python
+killed        v03  not_equivalent           decrement: the steps in reverse order
+killed        v03  not_equivalent           q[2] treated as the least significant bit
+variant ok    v03  MCX form in Qiskit Python
+killed        v04  not_equivalent           control and target swapped (the textbook big-endian reading)
+killed        v04  not_equivalent           SWAP
+variant ok    v04  H-CZ-H on q[1]
+killed        v05  not_equivalent           forward QFT instead of inverse
+killed        v05  not_equivalent           inverse QFT without the final swap
+variant ok    v05  written out gate by gate in QASM
+killed        v06  not_equivalent           no final swaps
+killed        v06  not_equivalent           phase signs flipped
+variant ok    v06  CP arguments in the other order (CP is symmetric)
+killed        v07  wrong_state              QFT applied to |011>
+killed        v07  wrong_state              inverse QFT applied to |110>
+variant ok    v07  hand-built QFT after X on q[1], q[2]
+killed        v08  not_equivalent           controlled-phase CP(pi/2) instead of CRZ
+killed        v08  not_equivalent           control and target swapped
+variant ok    v08  RZ(pi/4), CX, RZ(-pi/4), CX on the target
+killed        v09  not_equivalent           angles doubled: CP(pi/2)
+killed        v09  not_equivalent           second CX missing
+variant ok    v09  mirrored: the CX targets q[0]
+killed        v10  not_equivalent           SX-dagger: P(-pi/2)
+killed        v10  not_equivalent           P(pi/2) alone
+variant ok    v10  H, P(-3pi/2), H
+killed        v11  wrong_state              phase -i instead of i
+killed        v11  wrong_state              phase -1 instead of i
+variant ok    v11  S on q[1] instead of q[0]
+killed        v12  wrong_state              sign of the |100> term flipped
+killed        v12  wrong_state              big-endian reading: the i and -1 land on |010> and |001>
+variant ok    v12  same state times a global phase of i
+killed        v13  not_equivalent           standard decomposition with target q[2]
+killed        v13  not_equivalent           last controlled-phase correction missing
+variant ok    v13  same decomposition with the two controls exchanged
+killed        v14  not_equivalent           the X on q[1] is never undone
+killed        v14  not_equivalent           plain Toffoli: fires on q[1] = 1
+variant ok    v14  Qiskit ctrl_state='01' over controls [q[0], q[1]]
+killed        v15  not_equivalent           CCZ on q[0..2] only
+killed        v15  not_equivalent           phase i instead of -1
+variant ok    v15  H, CCCX, H on q[3]
+killed        v16  not_equivalent           control q[0], swapping q[1] and q[2]
+killed        v16  not_equivalent           unconditional SWAP
+variant ok    v16  CX, Toffoli, CX
+killed        v17  not_equivalent           Toffoli without the Hadamards
+killed        v17  not_equivalent           Hadamard on a control instead of the target
+variant ok    v17  conjugate q[0] instead (CCZ is symmetric)
+killed        v18  not_equivalent           big-endian reading: marks |001> and |011>
+killed        v18  not_equivalent           marks |100> only
+variant ok    v18  open-controlled Z in Qiskit Python
+killed        v19  not_equivalent           phase flip on |00> without the Hadamards
+killed        v19  not_equivalent           reflects about |11> instead of |00> inside the Hadamards
+variant ok    v19  H, Z, Z, CZ, H
+killed        v20  wrong_state              found |01> instead
+killed        v20  wrong_state              the starting state |++>
+variant ok    v20  the full Grover iteration
+killed        v21  not_equivalent           XOR instead of OR
+killed        v21  not_equivalent           AND instead of OR
+variant ok    v21  NOT(NOT x0 AND NOT x1)
+killed        v22  not_equivalent           order reversed: RY(pi/3) * RZ(pi/2)
+killed        v22  not_equivalent           half angle on RY
+variant ok    v22  same, in Qiskit Python
+killed        v23  not_equivalent           RX(pi/2) alone
+killed        v23  not_equivalent           last RZ missing
+variant ok    v23  RX(pi/2), RZ(pi/2), RX(pi/2)
+killed        v24  not_equivalent           half angle: RZ(pi/6)
+killed        v24  not_equivalent           second CX missing
+variant ok    v24  mirrored: CX into q[0]
+killed        v25  not_equivalent           plain SWAP: the S gates are missing
+killed        v25  not_equivalent           SWAP from three CX
+variant ok    v25  mirrored (iSWAP is symmetric)
+killed        v26  wrong_state              half-angle slip: RY(pi/8)
+killed        v26  wrong_state              phase sign flipped
+variant ok    v26  RZ instead of P (differs only by global phase)
+killed        v27  not_equivalent           control and target swapped
+killed        v27  not_equivalent           CNOT instead of controlled-H
+variant ok    v27  HGate().control(1) in Qiskit Python
+killed        v28  missing_measurement      no measurements
+killed        v28  missing_measurement      q[2] not measured
+variant ok    v28  fan-out CNOTs, measured in reverse order
+killed        v29  not_equivalent           only two CX
+killed        v29  not_equivalent           swaps q[0] and q[1] instead
+variant ok    v29  CX(2,0), CX(0,2), CX(2,0)
+killed        v30  wrong_state              W state (exactly one 1) instead
+killed        v30  wrong_state              |0101> term missing
+variant ok    v30  same state times a global phase of -1
+
+references pass: 30/30
+mutants killed:  60/60
+variants pass:   30/30

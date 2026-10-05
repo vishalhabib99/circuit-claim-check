@@ -23,6 +23,7 @@ Submissions can be OpenQASM 2, OpenQASM 3, or Qiskit Python that leaves the circ
 |---|---|---|---|
 | [`tasks/pilot.jsonl`](tasks/pilot.jsonl) | 30 | 8 / 14 / 8 | Used while building the grader |
 | [`tasks/blind.jsonl`](tasks/blind.jsonl) | 15 | 4 / 6 / 5 | Written after the grader was committed, held out for results |
+| [`tasks/v2.jsonl`](tasks/v2.jsonl) | 30 | 4 / 18 / 8 | Harder set for the self-checking question (condition A vs B, [Amendment 7](PREREGISTRATION.md)); committed before any agent saw it |
 
 Each task is tagged with the trap it tests: endianness, global vs relative phase, QFT vs inverse QFT, control/target swap, measurement, multi-controlled gates, Grover/Bernstein-Vazirani oracles, parameterized rotations, gate-set limits.
 
@@ -34,8 +35,9 @@ The grader was tested without any model. Every task has a reference solution, at
 |---|---|---|---|
 | Pilot | 30/30 | 61/61 | 33/33 |
 | Blind, first run, unedited | 15/15 | 30/30 | 15/15 |
+| v2 | 30/30 | 60/60 | 30/30 |
 
-Logs: [`evals/pilot_grader_check.txt`](evals/pilot_grader_check.txt), [`evals/blind_grader_check.txt`](evals/blind_grader_check.txt).
+Logs: [`evals/pilot_grader_check.txt`](evals/pilot_grader_check.txt), [`evals/blind_grader_check.txt`](evals/blind_grader_check.txt), [`evals/v2_grader_check.txt`](evals/v2_grader_check.txt). The 11 gate-limited v2 references are also checked against the named gate without the grader (`scripts/make_v2.py`).
 
 What that does and doesn't show: the mutants were written by the same author as the grader, so a 100% kill rate means the grader catches the mistakes we thought of. It doesn't show it catches every mistake an agent will make. The real test is the first agent run.
 

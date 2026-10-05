@@ -179,3 +179,30 @@ def test_summary_counts_claim_mismatches():
     assert s["overall"] == {"passed": 1, "total": 3}  # p03 counted as no_submission
     assert s["claimed_success_but_failed"] == {"count": 1, "of_claimed": 2}
     assert s["by_trap"]["endianness"] == {"passed": 0, "total": 1}
+
+
+# --- v2 set and condition B feedback ------------------------------------------
+
+V2 = {t["id"]: t for t in grader.load_jsonl(ROOT / "tasks" / "v2.jsonl")}
+V2_CASES = grader.load_jsonl(ROOT / "tests" / "fixtures" / "v2_cases.jsonl")
+
+
+@pytest.mark.parametrize("tid", sorted(V2))
+def test_v2_reference_passes(tid):
+    passed, reason, detail, _ = grader.grade_one(V2[tid], V2[tid]["reference"])
+    assert passed, f"{reason} {detail}"
+
+
+@pytest.mark.parametrize("case", V2_CASES, ids=[f"{c['id']}-{c['kind']}-{i}" for i, c in enumerate(V2_CASES)])
+def test_v2_fixture(case):
+    passed = grader.grade_one(V2[case["id"]], case["code"])[0]
+    assert passed == (case["kind"] == "variant"), case["note"]
+
+
+def test_feedback_never_shows_the_reference_or_a_verdict():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import exec_feedback
+    for case in V2_CASES:
+        out = "\n".join(exec_feedback.describe(V2[case["id"]], case["code"])).lower()
+        assert "reference" not in out and "pass" not in out and "fail" not in out, case["note"]
+        assert "output" in out
