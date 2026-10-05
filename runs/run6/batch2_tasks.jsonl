@@ -1,0 +1,10 @@
+{"id": "v11", "n_qubits": 2, "prompt": "Prepare (|00> + i|11>)/sqrt(2)."}
+{"id": "v12", "n_qubits": 3, "prompt": "Prepare (|001> + i|010> - |100>)/sqrt(3) (Qiskit convention: the rightmost character is q[0])."}
+{"id": "v13", "n_qubits": 3, "prompt": "Implement a Toffoli gate with controls q[0] and q[2] and target q[1], using only H, T, Tdg and CX gates."}
+{"id": "v14", "n_qubits": 3, "prompt": "Flip q[2] if and only if q[0] = 1 and q[1] = 0."}
+{"id": "v15", "n_qubits": 4, "prompt": "Implement CCCZ on q[0..3]: multiply the phase of |1111> by -1 and leave every other basis state unchanged."}
+{"id": "v16", "n_qubits": 3, "prompt": "Apply a controlled-SWAP (Fredkin) with control q[2] that swaps q[0] and q[1]."}
+{"id": "v17", "n_qubits": 3, "prompt": "Implement CCZ on q[0..2] (multiply the phase of |111> by -1) using only H and CCX (Toffoli) gates, at most 3 of them."}
+{"id": "v18", "n_qubits": 3, "prompt": "Implement a phase oracle that multiplies |100> and |110> by -1 and leaves every other basis state unchanged (Qiskit convention: the rightmost character is q[0])."}
+{"id": "v19", "n_qubits": 2, "prompt": "Implement the 2-qubit Grover diffusion operator 2|s><s| - I, where |s> = |++>. Global phase does not matter."}
+{"id": "v20", "n_qubits": 2, "prompt": "Prepare the state left after one Grover iteration that searches for |10>, starting from |++> (Qiskit convention: the rightmost character is q[0])."}

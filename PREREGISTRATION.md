@@ -156,6 +156,18 @@ Run 4 (Haiku) did not support H9: false success claims went from 6 (draft) to 8 
 - **H14:** Sonnet changes at least half of its wrong drafts after feedback (Haiku changed 2 of 6 of the ones it claimed, and kept 4 identical).
 - Reported side by side with run 4, as counts. Two models and 30 tasks can't support a general claim about models; the comparison says only what these two did on this set.
 
+## Amendment 10 (2026-10-05, after run 5, before run 6): condition C, pass/fail checks
+
+Run 4 showed that simulator output didn't reduce Haiku's false success claims. Condition C asks whether an actual check against the spec does. Approved by Vishal.
+
+**Run 6:** Claude Haiku, condition C. Same v2 tasks, 3 fresh agents × 10 tasks, draft → feedback → final, two Write calls per agent. The only change from run 4 is the feedback: `scripts/verdict_feedback.py` prints, per draft, PASS or FAIL with the grader's reason (and fidelity for state tasks), never the reference. Instructions: `runs/instructions_C.md`. Drafts hashed and committed before any feedback is generated.
+
+A verdict lets an agent cut false claims without fixing anything, by marking failed tasks unsure. So false claims alone don't measure this; fixes do.
+- **H15:** C-final has at most half as many false success claims as C-draft.
+- **H16 (main):** at least half of the draft's failed tasks pass in the final.
+- **H17:** C-final breaks no task that passed in the draft (a PASS verdict means "leave it").
+- Reported next to run 4 (Haiku, condition B) as counts. Run 4 and run 6 use different agent instances, so draft-to-final within each run is the comparison that counts.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.

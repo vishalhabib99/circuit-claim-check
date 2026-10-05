@@ -206,3 +206,12 @@ def test_feedback_never_shows_the_reference_or_a_verdict():
         out = "\n".join(exec_feedback.describe(V2[case["id"]], case["code"])).lower()
         assert "reference" not in out and "pass" not in out and "fail" not in out, case["note"]
         assert "output" in out
+
+
+def test_verdict_feedback_never_shows_the_reference():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import verdict_feedback
+    for case in V2_CASES:
+        out = verdict_feedback.verdict(V2[case["id"]], case["code"])
+        assert out == "PASS" if case["kind"] == "variant" else out.startswith("FAIL: ")
+        assert "OPENQASM" not in out and "qreg" not in out and "QuantumCircuit" not in out
