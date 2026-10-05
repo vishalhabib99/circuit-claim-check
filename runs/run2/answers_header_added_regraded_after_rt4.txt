@@ -1,0 +1,48 @@
+PASS  p01    pass
+PASS  p02    pass
+PASS  p03    pass
+PASS  p04    pass
+PASS  p05    pass
+PASS  p06    pass
+PASS  p07    pass
+PASS  p08    pass
+PASS  p09    pass
+PASS  p10    pass
+PASS  p11    pass
+PASS  p12    pass
+PASS  p13    pass
+PASS  p14    pass
+FAIL  p15    parse_error  (Python: submission raised AttributeError: 'QuantumCircuit' object has no attribute 'mct')
+PASS  p16    pass
+PASS  p17    pass
+FAIL  p18    wrong_state  (fidelity 0.055556)
+FAIL  p19    not_equivalent
+PASS  p20    pass
+PASS  p21    pass
+PASS  p22    pass
+PASS  p23    pass
+PASS  p24    pass
+PASS  p25    pass
+PASS  p26    pass
+PASS  p27    pass
+PASS  p28    pass
+PASS  p29    pass
+PASS  p30    pass
+PASS  b01    pass
+PASS  b02    pass
+PASS  b03    pass
+PASS  b04    pass
+PASS  b05    pass
+PASS  b06    pass
+PASS  b07    pass
+FAIL  b08    parse_error  (QASM 2: "<input>:4,0: 'ccx' takes 3 quantum arguments, but got 4")
+PASS  b09    pass
+PASS  b10    pass
+FAIL  b11    not_equivalent
+PASS  b12    pass
+PASS  b13    pass
+PASS  b14    pass
+FAIL  b15    wrong_state  (fidelity 0.814270)
+
+39/45 passed
+Claimed success but failed: 2/41

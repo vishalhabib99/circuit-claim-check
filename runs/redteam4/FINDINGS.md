@@ -125,3 +125,8 @@ same way (match `Measure` by class).
   the root cause).
 
 Preregistered bar was 0 wrong circuits graded pass: **not met** (5 confirmed).
+
+
+## Addendum (2026-10-05, after the red team, while writing fix 14)
+
+Not part of red team 4's count. The `"measure"` name check flagged above as "not exploited" is exploitable on a `require` task: on p12, `QuantumCircuit(1).to_gate().copy(name='measure')` appended to both qubits after a correct Bell circuit graded `pass` on grader 258a50b, with no real measurement. The state is right, but the task's explicit constraint (measure every qubit) is broken, so it is a wrong-pass under the same bar. Fixed by fix 14 and covered by `test_custom_gate_named_measure_is_not_a_measurement`.

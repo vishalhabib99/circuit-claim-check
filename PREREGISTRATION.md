@@ -109,6 +109,14 @@ Re-graded both runs: no verdict changed. All 22 confirmed attacks from red teams
 
 **Red team 4** (approved by Vishal 2026-10-05) runs against grader 1bc747a (fixes 12 and 13) under the same bar: 0 confirmed wrong-passes, each one shown wrong independently of `grader.py`. It gets all three earlier findings files. If it finds 0, the README may say the grader passed a red team. If it finds any, they get fixed and reported the same way, and the claim stays unmade.
 
+## Amendment 6 (2026-10-05): grader fix from red team 4
+
+Red team 4 got 5 wrong circuits graded `pass` (`runs/redteam4/FINDINGS.md`). A Python submission built an ordinary gate (an X, or a two-qubit gate) and renamed it `barrier` or `delay`. qpy keeps a custom gate's name, and the grader skipped ops by name, so it dropped a gate that really runs. The skipped op also escaped `allowed_gates` and `max_gates`. It needs no runner or sandbox tampering; QASM can't reach it because `barrier` and `delay` are reserved words. While fixing it I found a 6th instance of the same class (not counted in red team 4's 5): an identity gate named `measure` satisfied p12's "measure every qubit" requirement.
+
+14. Barriers, delays, measurements and resets are matched by class (`Barrier`, `Delay`, `Measure`, `Reset`), not by name. A gate with one of those names goes through the normal gate checks.
+
+Re-graded both runs: no verdict changed (`runs/*/answers*_regraded_after_rt4.txt`). All 27 confirmed attacks from red teams 1-4 now fail; 212 tests pass.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.

@@ -144,3 +144,35 @@ def test_python_is_refused_without_a_sandbox(monkeypatch):
     code = "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\n"
     passed, reason, _, _ = grader.grade_one(TASKS["p06"], code)
     assert (passed, reason) == (False, "python_needs_sandbox")
+
+
+# --- red team 4 (runs/redteam4/FINDINGS.md) --------------------------------
+
+RT4_ATTACKS = grader.load_jsonl(RT.parent / "redteam4" / "attacks.jsonl")
+
+
+@pytest.mark.parametrize("attack", RT4_ATTACKS, ids=[f"RT4-0{i + 1}" for i in range(len(RT4_ATTACKS))])
+def test_redteam4_attack_fails(attack):
+    passed, reason, detail, _ = grader.grade_one(TASKS[attack["id"]], attack["code"])
+    assert not passed, f"still passes: {reason} {detail}"
+
+
+def test_custom_gate_named_measure_is_not_a_measurement():
+    # Same name-vs-class confusion as RT4: an identity gate named "measure" must not
+    # satisfy a task that requires measuring every qubit.
+    code = (
+        "from qiskit import QuantumCircuit\n"
+        "fake = QuantumCircuit(1).to_gate().copy(name='measure')\n"
+        "qc = QuantumCircuit(2, 2)\nqc.h(0)\nqc.cx(0, 1)\nqc.append(fake, [0])\nqc.append(fake, [1])\n"
+    )
+    passed, reason, detail, _ = grader.grade_one(TASKS["p12"], code)
+    assert (passed, reason) == (False, "missing_measurement"), f"{reason} {detail}"
+
+
+@pytest.mark.parametrize("tid,code", [
+    ("p01", "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2)\nqc.h(0)\nqc.barrier()\nqc.delay(100, 0)\nqc.cx(0, 1)\n"),
+    ("p12", "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2, 2)\nqc.h(0)\nqc.cx(0, 1)\nqc.barrier()\nqc.measure([0, 1], [0, 1])\n"),
+])
+def test_real_barrier_delay_and_measure_still_pass_from_python(tid, code):
+    passed, reason, detail, _ = grader.grade_one(TASKS[tid], code)
+    assert passed, f"{reason} {detail}"

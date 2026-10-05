@@ -39,7 +39,7 @@ from pathlib import Path
 
 import numpy as np
 from qiskit import QuantumCircuit, qasm2, qasm3, qpy
-from qiskit.circuit import ControlFlowOp, Gate
+from qiskit.circuit import Barrier, ControlFlowOp, Delay, Gate, Measure, Reset
 from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.quantum_info import Operator, Statevector, state_fidelity
 
@@ -48,8 +48,9 @@ PYTHON_TIMEOUT_S = 60
 RUNNER = Path(__file__).with_name("_runner.py")
 SANDBOX_PROFILE = Path(__file__).with_name("_sandbox.sb")
 SANDBOX_EXEC = shutil.which("sandbox-exec")
-# Ops that never change the quantum state being graded.
-IGNORED_OPS = {"barrier", "delay"}
+# Ops that never change the quantum state being graded. Matched by class, not
+# name: a custom gate renamed "barrier" is still a gate (red team 4: RT4-01..05).
+IGNORED_OPS = (Barrier, Delay)
 # Ancilla rule (added before any agent run; see PREREGISTRATION.md): qubits
 # q[0..n-1] are the task's qubits, and up to MAX_ANCILLAS extra qubits after
 # them are allowed if they start in |0>, end in |0> for every input, and are
@@ -228,9 +229,9 @@ def _check_only_gates(qc: QuantumCircuit, top: bool = True, depth: int = 0) -> N
         raise GradeError("unsupported_op", "circuit uses classical variables")
     for inst in qc.data:
         op = inst.operation
-        if op.name in IGNORED_OPS:
+        if isinstance(op, IGNORED_OPS):
             continue
-        if top and op.name == "measure":
+        if top and isinstance(op, Measure):
             continue
         if isinstance(op, ControlFlowOp):
             raise GradeError("unsupported_op", f"control flow `{op.name}` can't be graded as a unitary")
@@ -301,14 +302,14 @@ def _final_measure_split(qc: QuantumCircuit) -> tuple[QuantumCircuit, set[int]]:
     measures: list[tuple[int, int]] = []  # (instruction index, qubit)
     for i, inst in enumerate(qc.data):
         name = inst.operation.name
-        if name in IGNORED_OPS:
+        if isinstance(inst.operation, IGNORED_OPS):
             continue
-        if name == "reset":
+        if isinstance(inst.operation, Reset) or name == "reset":
             raise GradeError("unsupported_op", "circuit contains reset")
         if getattr(inst.operation, "condition", None) is not None or name in ("if_else", "while_loop", "for_loop", "switch_case"):
             raise GradeError("unsupported_op", "circuit contains classical control flow")
         qubits = [qc.find_bit(q).index for q in inst.qubits]
-        if name == "measure":
+        if isinstance(inst.operation, Measure):
             measures.append((i, qubits[0]))
         else:
             for q in qubits:
@@ -318,14 +319,14 @@ def _final_measure_split(qc: QuantumCircuit) -> tuple[QuantumCircuit, set[int]]:
             raise GradeError("mid_circuit_measurement", f"q[{q}] is measured, then used again")
     stripped = QuantumCircuit(qc.num_qubits, global_phase=qc.global_phase)
     for inst in qc.data:
-        if inst.operation.name in IGNORED_OPS or inst.operation.name == "measure":
+        if isinstance(inst.operation, (*IGNORED_OPS, Measure)):
             continue
         stripped.append(inst.operation, [qc.find_bit(q).index for q in inst.qubits])
     return stripped, {q for _, q in measures}
 
 
 def _gate_names(qc: QuantumCircuit) -> set[str]:
-    return {inst.operation.name for inst in qc.data if inst.operation.name not in IGNORED_OPS | {"measure"}}
+    return {inst.operation.name for inst in qc.data if not isinstance(inst.operation, (*IGNORED_OPS, Measure))}
 
 
 def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
@@ -365,13 +366,13 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
             return False, "disallowed_gate", f"uses {sorted(extra)}; allowed {sorted(allowed)}", None
         # A name proves nothing: `gate cx a,b { cz a,b; }` is still a CZ (red team 1: A05, A06).
         for inst in sub_u.data:
-            if inst.operation.name in IGNORED_OPS:
+            if isinstance(inst.operation, IGNORED_OPS):
                 continue
             if not _behaves_like_standard(inst.operation):
                 return False, "disallowed_gate", f"`{inst.operation.name}` is redefined and doesn't act like the standard gate", None
     max_gates = task.get("max_gates")
     if max_gates is not None:
-        count = sum(1 for inst in sub_u.data if inst.operation.name not in IGNORED_OPS)
+        count = sum(1 for inst in sub_u.data if not isinstance(inst.operation, IGNORED_OPS))
         if count > max_gates:
             return False, "too_many_gates", f"{count} gates; the task allows {max_gates}", None
 

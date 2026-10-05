@@ -1,0 +1,48 @@
+PASS  p01    pass
+PASS  p02    pass
+PASS  p03    pass
+PASS  p04    pass
+PASS  p05    pass
+PASS  p06    pass
+PASS  p07    pass
+PASS  p08    pass
+PASS  p09    pass
+PASS  p10    pass
+PASS  p11    pass
+PASS  p12    pass
+PASS  p13    pass
+PASS  p14    pass
+FAIL  p15    parse_error  (Python: submission raised AttributeError: 'QuantumCircuit' object has no attribute 'mct')
+PASS  p16    pass
+PASS  p17    pass
+FAIL  p18    wrong_state  (fidelity 0.055556)
+FAIL  p19    not_equivalent
+PASS  p20    pass
+PASS  p21    pass
+PASS  p22    pass
+PASS  p23    pass
+PASS  p24    pass
+PASS  p25    pass
+PASS  p26    pass
+PASS  p27    pass
+PASS  p28    pass
+PASS  p29    pass
+PASS  p30    pass
+FAIL  b01    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b02    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b03    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b04    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b05    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b06    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+PASS  b07    pass
+FAIL  b08    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b09    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b10    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b11    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b12    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b13    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b14    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  b15    wrong_state  (fidelity 0.814270)
+
+28/45 passed
+Claimed success but failed: 13/41
