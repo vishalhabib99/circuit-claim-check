@@ -1,0 +1,93 @@
+== v21 ==
+  qubits: 3 (task has 3), classical bits: 0
+  gates: ccx x1, cx x2
+  output for each basis input (rightmost bit is q[0]):
+    |000> -> +1.0000|000>
+    |001> -> +1.0000|101>
+    |010> -> +1.0000|110>
+    |011> -> +1.0000|111>
+    |100> -> +1.0000|100>
+    |101> -> +1.0000|001>
+    |110> -> +1.0000|010>
+    |111> -> +1.0000|011>
+
+== v22 ==
+  qubits: 1 (task has 1), classical bits: 0
+  gates: ry x1, rz x1
+  output for each basis input (rightmost bit is q[0]):
+    |0> -> (+0.6124-0.6124i)|0>, (+0.3536+0.3536i)|1>
+    |1> -> (-0.3536+0.3536i)|0>, (+0.6124+0.6124i)|1>
+
+== v23 ==
+  qubits: 1 (task has 1), classical bits: 0
+  gates: rx x1, rz x2
+  output for each basis input (rightmost bit is q[0]):
+    |0> -> -0.7071i|0>, -0.7071i|1>
+    |1> -> -0.7071i|0>, +0.7071i|1>
+
+== v24 ==
+  qubits: 2 (task has 2), classical bits: 0
+  gates: cx x2, rz x1
+  output for each basis input (rightmost bit is q[0]):
+    |00> -> (+0.8660-0.5000i)|00>
+    |01> -> (+0.8660+0.5000i)|01>
+    |10> -> (+0.8660+0.5000i)|10>
+    |11> -> (+0.8660-0.5000i)|11>
+
+== v25 ==
+  qubits: 2 (task has 2), classical bits: 0
+  gates: cx x2, h x2, s x2
+  output for each basis input (rightmost bit is q[0]):
+    |00> -> +1.0000|00>
+    |01> -> +1.0000i|10>
+    |10> -> +1.0000i|01>
+    |11> -> +1.0000|11>
+
+== v26 ==
+  qubits: 1 (task has 1), classical bits: 0
+  gates: ry x1, u1 x1
+  output state from |0> (rightmost bit is q[0]):
+    |0>  +0.9239
+    |1>  (+0.2706+0.2706i)
+
+== v27 ==
+  qubits: 2 (task has 2), classical bits: 0
+  gates: cx x1, ry x2
+  output for each basis input (rightmost bit is q[0]):
+    |00> -> +1.0000|00>
+    |01> -> +0.7071|01>, +0.7071|11>
+    |10> -> +1.0000|10>
+    |11> -> +0.7071|01>, -0.7071|11>
+
+== v28 ==
+  qubits: 3 (task has 3), classical bits: 3
+  gates: cx x2, h x1, measure x3
+  measured at the end: q[0, 1, 2] (shown below before measurement)
+  output state from |000> (rightmost bit is q[0]):
+    |000>  +0.7071
+    |111>  +0.7071
+
+== v29 ==
+  qubits: 3 (task has 3), classical bits: 0
+  gates: cx x3
+  output for each basis input (rightmost bit is q[0]):
+    |000> -> +1.0000|000>
+    |001> -> +1.0000|100>
+    |010> -> +1.0000|010>
+    |011> -> +1.0000|110>
+    |100> -> +1.0000|001>
+    |101> -> +1.0000|101>
+    |110> -> +1.0000|011>
+    |111> -> +1.0000|111>
+
+== v30 ==
+  qubits: 4 (task has 4), classical bits: 0
+  gates: state_preparation x1
+  output state from |0000> (rightmost bit is q[0]):
+    |0011>  +0.4082
+    |0101>  +0.4082
+    |0110>  +0.4082
+    |1001>  +0.4082
+    |1010>  +0.4082
+    |1100>  +0.4082
+
