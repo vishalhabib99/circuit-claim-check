@@ -176,3 +176,29 @@ def test_custom_gate_named_measure_is_not_a_measurement():
 def test_real_barrier_delay_and_measure_still_pass_from_python(tid, code):
     passed, reason, detail, _ = grader.grade_one(TASKS[tid], code)
     assert passed, f"{reason} {detail}"
+
+
+# --- fix 15: circuit labels (run 4 drafts) -----------------------------------
+
+def test_setting_a_circuit_name_is_allowed():
+    code = "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.name = 'v04'\n"
+    passed, reason, detail, _ = grader.grade_one(TASKS["p06"], code)
+    assert passed, f"{reason} {detail}"
+
+
+@pytest.mark.parametrize("code", [
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.global_phase = 1.0\n",
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.name = str(1)\n",
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.data[0].name = 'x'\n",
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.name = qc.metadata = 'x'\n",
+])
+def test_other_attribute_assignments_still_refused(code):
+    passed, reason, _, _ = grader.grade_one(TASKS["p06"], code)
+    assert (passed, reason) == (False, "disallowed_python")
+
+
+def test_renaming_a_gate_by_assignment_still_cannot_hide_it():
+    # RT4 by assignment instead of copy(name=...): still caught by fix 14.
+    code = ("from qiskit import QuantumCircuit\ninner = QuantumCircuit(1)\ninner.x(0)\nhidden = inner.to_gate()\n"
+            "hidden.name = 'barrier'\nqc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.append(hidden, [0])\n")
+    assert not grader.grade_one(TASKS["p06"], code)[0]

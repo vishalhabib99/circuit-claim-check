@@ -142,6 +142,10 @@ Run 1 (Sonnet) passed v1 45/45, so v1 can't show whether self-checking helps. v2
 
 **What 30 tasks can show.** Pass/fail differences are tested with an exact McNemar test on the discordant pairs, two-sided, and reported with the counts. With 30 tasks only a large effect will show up, so a null result means "no large effect", not "no effect". A and B use different agent instances, so A vs B mixes feedback with run-to-run variation; B-draft vs B-final is the cleaner comparison. One round of feedback is not open-ended tool use. The tasks and the agents are from the same model family.
 
+## Amendment 8 (2026-10-05, during run 4, before any feedback was sent): fix 15
+
+Run 4's batch 1 drafts all set a circuit label (`qc.name = "v02"`). The Python subset from fix 12 refused every attribute assignment, so these drafts couldn't be loaded, though Qiskit runs them fine. That is a false fail, and it would have made the condition B feedback something other than "what Qiskit shows". 15. `x.name = "<string>"` is allowed. Nothing else changes: it gives a submission nothing `copy(name=...)` didn't already allow, and operations have been matched by class since fix 14. Other attribute assignments are still refused (tests in `tests/test_redteam1.py`). The three drafts were hashed (`runs/run4/drafts.sha256`) and committed with this fix, before any feedback was generated. Re-grading run 3 and runs 1-2 with fix 15 changed no verdict, so run 3 is reported once.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.

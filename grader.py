@@ -175,7 +175,12 @@ def _check_python_subset(code: str) -> None:
             bad = f"class {node.name}"
         elif isinstance(node, (ast.Assign, ast.AugAssign, ast.AnnAssign, ast.Delete)):
             targets = node.targets if isinstance(node, (ast.Assign, ast.Delete)) else [node.target]
-            if any(isinstance(t, ast.Attribute) for tg in targets for t in ast.walk(tg)):
+            # One exception: `x.name = "label"`. Agents label circuits this way (run 4 drafts), and it
+            # adds nothing `copy(name=...)` can't already do; ops are matched by class, not name (fix 14).
+            is_label = (isinstance(node, ast.Assign) and len(targets) == 1 and isinstance(targets[0], ast.Attribute)
+                        and targets[0].attr == "name" and isinstance(targets[0].value, ast.Name)
+                        and isinstance(node.value, ast.Constant) and isinstance(node.value.value, str))
+            if not is_label and any(isinstance(t, ast.Attribute) for tg in targets for t in ast.walk(tg)):
                 bad = "assignment to an attribute"
         if bad:
             raise GradeError("disallowed_python", f"`{bad}` is outside the allowed Python subset (imports: {sorted(PY_ALLOWED_IMPORTS)})")
