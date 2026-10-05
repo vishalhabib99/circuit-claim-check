@@ -81,12 +81,7 @@ def load_circuit(code: str) -> QuantumCircuit:
     stripped = code.lstrip()
     if stripped.startswith("OPENQASM 2"):
         try:
-            # Legacy definitions add gates like c3x that qelib1.inc lacks, but they
-            # also silently replace a program's own `gate h ...` with the library
-            # gate (red team 1: A07). Drop any name the program defines itself.
-            own = set(re.findall(r"(?m)^\s*(?:gate|opaque)\s+([A-Za-z_][A-Za-z0-9_]*)", code))
-            legacy = [ci for ci in qasm2.LEGACY_CUSTOM_INSTRUCTIONS if ci.name not in own]
-            return qasm2.loads(code, custom_instructions=legacy)
+            return _load_qasm2(code)
         except Exception as e:  # noqa: BLE001 - any parser failure is a parse error
             raise GradeError("parse_error", f"QASM 2: {e}") from e
     if stripped.startswith("OPENQASM 3"):
@@ -97,6 +92,23 @@ def load_circuit(code: str) -> QuantumCircuit:
     if _looks_like_qasm(stripped):
         raise GradeError("parse_error", "looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one)")
     return _run_python(code)
+
+
+def _load_qasm2(code: str) -> QuantumCircuit:
+    """Parse OpenQASM 2 faithfully; use Qiskit's legacy gate set only as a fallback.
+
+    The legacy set adds gates like c3x that qelib1.inc lacks, but it silently
+    replaces a program's own `gate cx ...` with the library gate (red team 1:
+    A07). Finding the program's gate names with a regex was evadable (red team
+    2: RT2-02), so: parse with no extra gates first, and fall back to the legacy
+    set only for a program that defines no gates of its own at all.
+    """
+    try:
+        return qasm2.loads(code)
+    except Exception:  # noqa: BLE001 - maybe a legacy-only gate such as c3x
+        if re.search(r"\b(?:gate|opaque)\b", code):
+            raise
+        return qasm2.loads(code, custom_instructions=qasm2.LEGACY_CUSTOM_INSTRUCTIONS)
 
 
 def _looks_like_qasm(text: str) -> bool:

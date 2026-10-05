@@ -57,3 +57,46 @@ def test_tiny_numerical_noise_still_passes():
     code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[1];\nry(1.0471975511965976) q[0];\n'
     passed, reason, detail, _ = grader.grade_one(TASKS["p05"], code)
     assert passed, f"{reason} {detail}"
+
+
+# --- red team 2 (runs/redteam2/FINDINGS.md) --------------------------------
+
+RT2_ATTACKS = grader.load_jsonl(RT.parent / "redteam2" / "attacks.jsonl")
+
+
+@pytest.mark.parametrize("attack", RT2_ATTACKS, ids=[f"RT2-0{i + 1}" for i in range(len(RT2_ATTACKS))])
+def test_redteam2_attack_fails(attack):
+    passed, reason, detail, _ = grader.grade_one(TASKS[attack["id"]], attack["code"])
+    assert not passed, f"still passes: {reason} {detail}"
+
+
+def test_qasm2_gate_defined_after_a_statement_on_the_same_line_is_honored():
+    code = 'OPENQASM 2.0;\nqreg q[2]; gate cx a,b { U(0,0,0) a; } /* x */\ncx q[1],q[0];\n'
+    assert not grader.grade_one(TASKS["p06"], code)[0]
+
+
+def test_qasm2_c3x_from_legacy_set_still_works():
+    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[4];\nc3x q[0],q[1],q[2],q[3];\n'
+    passed, reason, detail, _ = grader.grade_one(TASKS["p15"], code)
+    assert passed, f"{reason} {detail}"
+
+
+@pytest.mark.parametrize("code", [
+    "import sys\nfrom qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\n",
+    "from qiskit import QuantumCircuit\nimport atexit\nqc = QuantumCircuit(2); qc.cx(1, 0)\n",
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\nf = (lambda: 0).__globals__\n",
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\ng = (x for x in [1]); fr = g.gi_frame\n",
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\nopen('x', 'w')\n",
+    "from qiskit import QuantumCircuit\nfrom qiskit.circuit import quantumcircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\nquantumcircuit.sys\n",
+    "from qiskit import QuantumCircuit\nqc = QuantumCircuit(2); qc.cx(1, 0)\ngetattr(qc, 'x')\n",
+])
+def test_python_outside_the_allowed_subset_is_rejected(code):
+    passed, reason, detail, _ = grader.grade_one(TASKS["p06"], code)
+    assert (passed, reason) == (False, "disallowed_python"), f"{reason} {detail}"
+
+
+def test_ordinary_python_answer_still_passes():
+    code = ("import math\nimport numpy as np\nfrom qiskit import QuantumCircuit\nfrom qiskit.circuit.library import QFTGate\n"
+            "qc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.rz(2 * math.pi, 0)\nqc.rz(np.pi * 0, 1)\n")
+    passed, reason, detail, _ = grader.grade_one(TASKS["p06"], code)
+    assert passed, f"{reason} {detail}"
