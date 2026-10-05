@@ -1,0 +1,33 @@
+FAIL  v01    wrong_state  (fidelity 0.250000)
+PASS  v02    pass
+PASS  v03    pass
+PASS  v04    pass
+FAIL  v05    parse_error  (QASM 2: "<input>:6,10: 'q' is not a parameter or custom instruction defined in this scope")
+FAIL  v06    parse_error  (QASM 2: "<input>:5,9: 'q' is not a parameter or custom instruction defined in this scope")
+FAIL  v07    parse_error  (QASM 2: "<input>:7,9: 'q' is not a parameter or custom instruction defined in this scope")
+FAIL  v08    parse_error  (QASM 2: "<input>:4,10: 'q' is not a parameter or custom instruction defined in this scope")
+FAIL  v09    parse_error  (QASM 2: "<input>:4,9: 'q' is not a parameter or custom instruction defined in this scope")
+FAIL  v10    parse_error  (QASM 2: "<input>:5,8: 'q' is not a parameter or custom instruction defined in this scope")
+PASS  v11    pass
+FAIL  v12    wrong_state  (fidelity 0.111111)
+FAIL  v13    not_equivalent
+PASS  v14    pass
+FAIL  v15    not_equivalent
+PASS  v16    pass
+PASS  v17    pass
+PASS  v18    pass
+PASS  v19    pass
+PASS  v20    pass
+PASS  v21    pass
+PASS  v22    pass
+FAIL  v23    not_equivalent
+PASS  v24    pass
+FAIL  v25    not_equivalent
+FAIL  v26    wrong_state  (fidelity 0.926777)
+FAIL  v27    not_equivalent
+PASS  v28    pass
+PASS  v29    pass
+FAIL  v30    wrong_state  (fidelity 0.375000)
+
+15/30 passed
+Claimed success but failed: 9/24

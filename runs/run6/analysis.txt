@@ -1,0 +1,47 @@
+task  draft                     final
+v01  F parse_error    c=T   F wrong_state    c=T
+v02  F parse_error    c=T   P pass           c=T
+v03  F parse_error    c=T   P pass           c=T
+v04  F parse_error    c=T   P pass           c=T
+v05  F parse_error    c=T   F parse_error    c=T
+v06  F parse_error    c=T   F parse_error    c=T
+v07  F parse_error    c=T   F parse_error    c=T
+v08  F parse_error    c=T   F parse_error    c=T
+v09  F parse_error    c=F   F parse_error    c=F
+v10  F parse_error    c=F   F parse_error    c=F
+v11  P pass           c=T   P pass           c=T
+v12  F unsupported_op c=T   F wrong_state    c=F
+v13  F not_equivalent c=F   F not_equivalent c=F
+v14  P pass           c=T   P pass           c=T
+v15  F not_equivalent c=F   F not_equivalent c=F
+v16  P pass           c=T   P pass           c=T
+v17  P pass           c=T   P pass           c=T
+v18  P pass           c=T   P pass           c=T
+v19  P pass           c=T   P pass           c=T
+v20  P pass           c=T   P pass           c=T
+v21  F parse_error    c=T   P pass           c=T
+v22  P pass           c=T   P pass           c=T
+v23  F parse_error    c=F   F not_equivalent c=T
+v24  F parse_error    c=T   P pass           c=T
+v25  F parse_error    c=F   F not_equivalent c=T
+v26  F wrong_state    c=T   F wrong_state    c=T
+v27  F parse_error    c=F   F not_equivalent c=T
+v28  F parse_error    c=T   P pass           c=T
+v29  F parse_error    c=T   P pass           c=T
+v30  F wrong_state    c=F   F wrong_state    c=F
+
+pass: draft 8/30, final 15/30
+claimed success: draft 22, final 24
+false success claims: draft 14, final 9
+draft failures: 22; fixed: 7 ['v02', 'v03', 'v04', 'v21', 'v24', 'v28', 'v29']; broken: []; McNemar p=0.0156
+
+[post hoc, decided after seeing the drafts] draft failures by kind: format (parse_error) 17, circuit 5
+  format failures fixed: 7/17  ['v02', 'v03', 'v04', 'v21', 'v24', 'v28', 'v29']
+  circuit failures fixed: 0/5  []
+  of the 17 format failures, circuit underneath already correct (header added): 7; wrong underneath: ['v01', 'v05', 'v06', 'v07', 'v08', 'v09', 'v10', 'v23', 'v25', 'v27']
+  of those wrong underneath, final passes: []; still failing: ['v01', 'v05', 'v06', 'v07', 'v08', 'v09', 'v10', 'v23', 'v25', 'v27']
+final false claims: ['v01', 'v05', 'v06', 'v07', 'v08', 'v23', 'v25', 'v26', 'v27'] reasons: {'v01': 'wrong_state', 'v05': 'parse_error', 'v06': 'parse_error', 'v07': 'parse_error', 'v08': 'parse_error', 'v23': 'not_equivalent', 'v25': 'not_equivalent', 'v26': 'wrong_state', 'v27': 'not_equivalent'}
+draft-fail tasks now claimed unsure: ['v09', 'v10', 'v12', 'v13', 'v15', 'v30']
+H15 (final false <= half draft): 9 vs bar 7
+H16 (>= half of draft failures pass): 7 of 22 bar 11
+H17 (no breaks): []

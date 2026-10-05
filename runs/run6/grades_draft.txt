@@ -1,0 +1,33 @@
+FAIL  v01    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v02    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v03    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v04    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v05    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v06    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v07    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v08    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v09    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v10    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+PASS  v11    pass
+FAIL  v12    unsupported_op  (`initialize` is not a unitary gate)
+FAIL  v13    not_equivalent
+PASS  v14    pass
+FAIL  v15    not_equivalent
+PASS  v16    pass
+PASS  v17    pass
+PASS  v18    pass
+PASS  v19    pass
+PASS  v20    pass
+FAIL  v21    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+PASS  v22    pass
+FAIL  v23    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v24    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v25    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v26    wrong_state  (fidelity 0.926777)
+FAIL  v27    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v28    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v29    parse_error  (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+FAIL  v30    wrong_state  (fidelity 0.375000)
+
+8/30 passed
+Claimed success but failed: 14/22
