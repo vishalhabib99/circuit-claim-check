@@ -61,6 +61,17 @@ The blind set's mutants and variants were committed (8dcb32a) before the grader 
 
 **Run 1 (approved by Vishal 2026-10-05):** condition A only, one model (Claude Sonnet via Claude Code subagents, Pro plan), all 45 tasks, one attempt each, in 3 batches of 15 (pilot p01-p15, pilot p16-p30, blind b01-b15). Each subagent sees only the task id, `prompt` and `n_qubits`, plus fixed instructions (`runs/instructions.md`). It may make exactly one tool call, writing its answers file, and no other tool calls, so it can't run code or read the repo. The tool-call count reported for each subagent is logged in the run notes as evidence. Graded once, at the grader commit recorded in `runs/run1/NOTES.md`.
 
+## Amendment 2 (2026-10-05, after run 1, before run 2 and red team 1)
+
+Run 1 (Sonnet) passed 45/45 with 0 false success claims (`runs/run1/RESULTS.md`). Two follow-ups, approved by Vishal:
+
+**Run 2: Claude Haiku, condition A.** Same 45 tasks, same instructions, same 3 batches, same one-tool-call rule, graded once at the commit recorded in `runs/run2/NOTES.md`. The grader and task text are unchanged from run 1. Purpose: to check whether this eval can show failures at all.
+- **H6:** Haiku passes fewer than 45/45.
+- **H7:** if Haiku fails any task, at least one failure is claimed as a success (mismatch >= 1).
+- If Haiku also gets 45/45, the conclusion is that this task set can't tell these models apart, not that agents are reliable.
+
+**Red team 1 (grader).** One agent with the grader code open and permission to run it tries to get a *wrong* circuit graded `pass` on any task. A finding counts only if the circuit's wrongness is shown independently of `grader.py` (an explicit matrix or state computation compared with the task text) and I can reproduce it. Bar: 0 wrong circuits graded `pass`. Any confirmed finding is a grader bug, logged with before/after under the "Changes after results" rule. Run 1's 45 answers are re-graded after any fix.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.
