@@ -17,9 +17,9 @@ what that does and doesn't protect against.
 
 Grading is exact, no model involved:
 - unitary: the submission's operator equals the reference's up to a global
-  phase (Operator.equiv).
-- statevector: the state reached from |0...0> has fidelity >= 1 - 1e-6 with
-  the reference's.
+  phase, elementwise within 1e-9.
+- statevector: the state reached from |0...0> equals the reference's up to a
+  global phase, elementwise within 1e-9.
 """
 from __future__ import annotations
 
@@ -40,7 +40,6 @@ from qiskit.circuit import ControlFlowOp, Gate
 from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.quantum_info import Operator, Statevector, state_fidelity
 
-FIDELITY_TOL = 1e-6
 MATRIX_ATOL = 1e-9
 PYTHON_TIMEOUT_S = 60
 RUNNER = Path(__file__).with_name("_runner.py")
@@ -52,7 +51,9 @@ IGNORED_OPS = {"barrier", "delay"}
 # never measured. Capped so the full unitary stays small enough to build.
 MAX_ANCILLAS = 3
 STANDARD_GATES = get_standard_gate_name_mapping()
-LEAK_TOL = 1e-6
+# Tight on purpose: 1e-6 let an amplitude off by ~7e-4 and an angle off by 9e-6
+# pass (red team 1: A13-A15). Exact answers in double precision are off by ~1e-15.
+LEAK_TOL = 1e-9
 
 
 class GradeError(Exception):
@@ -163,6 +164,18 @@ def _is_standard_gate(op) -> bool:
     return std is not None and type(op) is type(std)
 
 
+def _equal_up_to_phase(a: np.ndarray, b: np.ndarray, atol: float = MATRIX_ATOL) -> bool:
+    """Elementwise equal within atol after removing one global phase."""
+    if a.shape != b.shape:
+        return False
+    k = np.unravel_index(np.argmax(np.abs(b)), b.shape)
+    if abs(b[k]) < 1e-12 or abs(a[k]) < 1e-12:
+        return False
+    phase = a[k] / b[k]
+    phase /= abs(phase)
+    return bool(np.allclose(a, phase * b, rtol=0, atol=atol))
+
+
 def _behaves_like_standard(op) -> bool:
     """True if `op` has the matrix of the standard library gate with its name and params."""
     std = STANDARD_GATES.get(op.name)
@@ -269,7 +282,7 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
             leak = float(np.linalg.norm(full[dim:, :dim])) if n_anc else 0.0
             if leak > LEAK_TOL:
                 return False, "dirty_ancilla", f"ancillas not returned to |0> (leak {leak:.2e})", None
-            ok = Operator(full[:dim, :dim]).equiv(Operator(ref))
+            ok = _equal_up_to_phase(full[:dim, :dim], Operator(ref).data)
             return ok, "pass" if ok else "not_equivalent", "", None
         if mode == "statevector":
             out = Statevector.from_label("0" * sub_u.num_qubits).evolve(sub_u).data
@@ -278,7 +291,7 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
                 return False, "dirty_ancilla", f"ancillas not returned to |0> (leak {leak:.2e})", None
             target = Statevector.from_label("0" * n).evolve(ref)
             fid = float(state_fidelity(Statevector(out[:dim]), target))
-            ok = fid >= 1 - FIDELITY_TOL
+            ok = _equal_up_to_phase(out[:dim], target.data)
             return ok, "pass" if ok else "wrong_state", f"fidelity {fid:.6f}", fid
     except Exception as e:  # noqa: BLE001 - e.g. an opaque gate with no matrix
         return False, "simulation_error", str(e), None
