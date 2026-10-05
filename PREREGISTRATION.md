@@ -72,6 +72,19 @@ Run 1 (Sonnet) passed 45/45 with 0 false success claims (`runs/run1/RESULTS.md`)
 
 **Red team 1 (grader).** One agent with the grader code open and permission to run it tries to get a *wrong* circuit graded `pass` on any task. A finding counts only if the circuit's wrongness is shown independently of `grader.py` (an explicit matrix or state computation compared with the task text) and I can reproduce it. Bar: 0 wrong circuits graded `pass`. Any confirmed finding is a grader bug, logged with before/after under the "Changes after results" rule. Run 1's 45 answers are re-graded after any fix.
 
+## Amendment 3 (2026-10-05): grader fixes from red team 1
+
+Red team 1 got 16 wrong circuits graded `pass` (`runs/redteam1/FINDINGS.md`). Fixed in commits 3266c1b..this one, one commit per class, with every attack kept as a regression test (`tests/test_redteam1.py`):
+1. one crashing submission no longer stops the run; clear error for QASM with no version line (W1)
+2. non-unitary ops rejected at any depth: `initialize`, hidden resets, control flow, classical variables (A01, A02, W3, W4)
+3. Python output path and nonce go over stdin, the serializer is captured before the submission runs, and the runner must confirm it finished (A03, A04). Not a sandbox.
+4. a QASM 2 program's own gate definitions are honored (A07)
+5. allowed gates are checked by behavior, not name; optional `max_gates` (A05, A06)
+6. tasks with no measure setting forbid measurements, matching the agent instructions (A08, A09)
+7. elementwise comparison within 1e-9 after one global phase; ancilla leak 1e-9 (A13-A15)
+8. the register named `q` holds the task's qubits wherever it is declared (A16, W2)
+9. **task metadata added after results were seen:** `allowed_gates`/`max_gates` on p04 (`rz`, 1), b03 (`rx`, 1) and b10 (`x`, `h`, 2). These rules were already in the task text ("a single RZ rotation", "a single RX rotation", "by applying H to |1>"), but the grader didn't enforce them. **Task text is unchanged.** Because this changes how two blind tasks are graded after results, runs 1 and 2 are reported under both the old and the new grader. Three fixture "variants" were actually breaking those rules (plain Z, plain X, H then Z, the same as attacks A10-A12). They are relabeled as mutants, and correct variants were added in their place.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.

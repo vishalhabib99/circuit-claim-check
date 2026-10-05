@@ -9,7 +9,7 @@
 {"id": "p03", "kind": "variant", "note": "H then Z", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nh q[0];\nz q[0];\n"}
 {"id": "p04", "kind": "mutant", "note": "quarter turn: RZ(pi/2) is S up to phase, not Z", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(pi/2) q[0];\n"}
 {"id": "p04", "kind": "mutant", "note": "wrong axis", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrx(pi) q[0];\n"}
-{"id": "p04", "kind": "variant", "note": "plain Z gate (differs from RZ(pi) only by global phase)", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nz q[0];\n"}
+{"id": "p04", "kind": "mutant", "note": "plain Z gate (differs from RZ(pi) only by global phase) [relabeled after red team 1: breaks the task's stated gate rule]", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nz q[0];\n"}
 {"id": "p04", "kind": "variant", "note": "RZ(-pi), same up to global phase", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(-pi) q[0];\n"}
 {"id": "p05", "kind": "mutant", "note": "sign flipped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nry(-pi/3) q[0];\n"}
 {"id": "p05", "kind": "mutant", "note": "wrong axis", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrx(pi/3) q[0];\n"}
@@ -92,3 +92,4 @@
 {"id": "p30", "kind": "mutant", "note": "control and target swapped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncry(pi/2) q[1],q[0];\n"}
 {"id": "p30", "kind": "mutant", "note": "sign flipped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncry(-pi/2) q[0],q[1];\n"}
 {"id": "p30", "kind": "variant", "note": "RY(pi/4), CX, RY(-pi/4), CX", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nry(pi/4) q[1];\ncx q[0],q[1];\nry(-pi/4) q[1];\ncx q[0],q[1];\n"}
+{"id": "p04", "kind": "variant", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(-pi) q[0];\n", "note": "single RZ(-pi): Z up to global phase, still one RZ [added after red team 1]"}
