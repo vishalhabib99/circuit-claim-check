@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import secrets
 import subprocess
 import sys
@@ -78,7 +79,12 @@ def load_circuit(code: str) -> QuantumCircuit:
     stripped = code.lstrip()
     if stripped.startswith("OPENQASM 2"):
         try:
-            return qasm2.loads(code, custom_instructions=qasm2.LEGACY_CUSTOM_INSTRUCTIONS)
+            # Legacy definitions add gates like c3x that qelib1.inc lacks, but they
+            # also silently replace a program's own `gate h ...` with the library
+            # gate (red team 1: A07). Drop any name the program defines itself.
+            own = set(re.findall(r"(?m)^\s*(?:gate|opaque)\s+([A-Za-z_][A-Za-z0-9_]*)", code))
+            legacy = [ci for ci in qasm2.LEGACY_CUSTOM_INSTRUCTIONS if ci.name not in own]
+            return qasm2.loads(code, custom_instructions=legacy)
         except Exception as e:  # noqa: BLE001 - any parser failure is a parse error
             raise GradeError("parse_error", f"QASM 2: {e}") from e
     if stripped.startswith("OPENQASM 3"):
