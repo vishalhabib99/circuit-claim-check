@@ -1,0 +1,32 @@
+PASS  p02    pass
+FAIL  p02    wrong_state  (fidelity 0.000000)
+PASS  p06    pass
+PASS  p06    pass
+PASS  p14    pass
+PASS  b12    pass
+PASS  b12    pass
+PASS  p06    pass
+PASS  p01    pass
+PASS  p04    pass
+PASS  b03    pass
+PASS  b10    pass
+PASS  p03    pass
+PASS  p05    pass
+PASS  p03    pass
+PASS  p02    pass
+FAIL  p02    simulation_error  ('Circuits with control flow operations cannot be converted to an instruction.')
+FAIL  p11    dirty_ancilla  (ancillas not returned to |0> (leak 1.41e+00))
+FAIL  p12    ancilla_measured  (ancilla qubits measured: [2])
+FAIL  p13    measurement_not_allowed  (task asked for no measurements; measured [1])
+FAIL  p06    simulation_error  ('Cannot apply Operation: magic')
+FAIL  p05    simulation_error  (Parameter expression with unbound parameters {Standalone { name: "t", uuid: 815fbda4-d0d9-4686-8942-c969ce468ea5 }} is not numeric.)
+FAIL  p01    unsupported_op  (circuit contains classical control flow)
+FAIL  p12    mid_circuit_measurement  (q[0] is measured, then used again)
+FAIL  p01    unsupported_op  (circuit contains reset)
+FAIL  p14    disallowed_gate  (uses ['myswap']; allowed ['cx'])
+FAIL  b12    disallowed_gate  (uses ['cx2']; allowed ['cx', 'h'])
+FAIL  p25    not_equivalent
+FAIL  p01    dirty_ancilla  (ancillas not returned to |0> (leak 1.50e-06))
+FAIL  p08    not_equivalent
+
+15/60 passed

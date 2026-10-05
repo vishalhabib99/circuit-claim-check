@@ -1,0 +1,1 @@
+{"id": "p01", "attack": "C02", "idea": "classical Var + store -> uncaught CircuitError", "code": "from qiskit import QuantumCircuit\nqc=QuantumCircuit(2); v=qc.add_var('v', True); qc.h(0); qc.cx(0,1); qc.store(v, False)\n"}

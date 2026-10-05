@@ -1,0 +1,1 @@
+{"id": "p01", "attack": "C01", "idea": "non-measure instruction with a classical bit -> uncaught CircuitError", "code": "from qiskit import QuantumCircuit\nfrom qiskit.circuit import Instruction\nqc=QuantumCircuit(2,1); qc.h(0); qc.cx(0,1)\nqc.append(Instruction('foo',1,1,[]),[0],[0])\n"}

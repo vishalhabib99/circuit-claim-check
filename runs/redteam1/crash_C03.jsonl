@@ -1,0 +1,1 @@
+{"id": "p01", "attack": "C03", "idea": "measure hidden inside a custom instruction -> uncaught CircuitError", "code": "from qiskit import QuantumCircuit\nm=QuantumCircuit(1,1,name='m'); m.measure(0,0)\nqc=QuantumCircuit(2,1); qc.h(0); qc.cx(0,1); qc.append(m.to_instruction(),[0],[0])\n"}

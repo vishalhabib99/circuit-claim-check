@@ -1,0 +1,32 @@
+A01 [p02] independent verdict: WRONG
+    ops=['ry', 'cx', 'initialize']; reduced task state is mixed, purity=0.9802, fidelity with |01> = 0.9900 (task asks exactly |01>); contains a reset the grader says it rejects
+A02 [p02] independent verdict: WRONG
+    ops=['h', 'cx', 'clean']; reduced task state is mixed, purity=0.5000, fidelity with |01> = 0.5000 (task asks exactly |01>); contains a reset the grader says it rejects
+A03 [p06] independent verdict: WRONG
+    qc implements CX(control q0,target q1); equiv to task CX(control q1,target q0)? False; max|diff|=1.000
+A04 [p06] independent verdict: WRONG
+    qc implements CX(control q0,target q1); equiv to task CX(control q1,target q0)? False; max|diff|=1.000
+A05 [p14] independent verdict: WRONG (constraint)
+    top-level ops=['cx'], but that 'cx' is defined as ['swap']; one gate whose matrix is SWAP; single 'cx' equals a real CNOT? False. Task: 'using only CNOT gates'.
+A06 [b12] independent verdict: WRONG (constraint)
+    ops=['cx']; gate named cx has matrix equal to CZ? True; equal to CNOT? False; no H and no real CNOT used. Task: 'using only H and CNOT gates'.
+A07 [b12] independent verdict: WRONG
+    parsed with the program's own definitions: U == I? True; U == CZ? False. Qiskit's LEGACY_CUSTOM_INSTRUCTIONS silently replaces the user's 'h'/'cx' with the standard gates.
+A08 [p06] independent verdict: WRONG (rule)
+    ops=['cx', 'measure', 'measure'] -> 2 measurements; circuit is NOT a unitary (Operator raises: QiskitError). Instructions: 'Don't add measurements unless the task asks for them' and the task does not ask.
+A09 [p01] independent verdict: WRONG (rule)
+    ops=['h', 'cx', 'measure', 'measure'] -> 2 measurements; circuit is NOT a unitary (Operator raises: QiskitError). Instructions: 'Don't add measurements unless the task asks for them' and the task does not ask.
+A10 [p04] independent verdict: WRONG (constraint)
+    ops=['z']; task requires a single rz.
+A11 [b03] independent verdict: WRONG (constraint)
+    ops=['x']; task requires a single rx.
+A12 [b10] independent verdict: WRONG (constraint)
+    ops=['h', 'z']; task requires H applied to |1> (x then h).
+A13 [p03] independent verdict: WRONG (tolerance)
+    state=[ 0.707778+0.j -0.706435+0.j], target=[ 0.707107 -0.707107], max|diff|=6.72e-04, fidelity=0.99999910
+A14 [p05] independent verdict: WRONG (tolerance)
+    max|U - RY(pi/3)| = 3.90e-06 (angle off by 9e-6 rad)
+A15 [p03] independent verdict: WRONG (tolerance)
+    ancilla amplitude on |1> = 9.50e-07; rule says it must end in |0>
+A16 [p02] independent verdict: WRONG (by register name)
+    qubit order=[('r', 0), ('q', 0), ('q', 1)]; register q (q[0],q[1]) probs=[1. 0. 0. 0.] -> |00>, task asks q[0]=1 (|01>); extra register r ends in |1> with prob 1 (ancilla must end |0>)
