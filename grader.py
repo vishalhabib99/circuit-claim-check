@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import secrets
 import subprocess
 import sys
 import tempfile
@@ -96,21 +97,28 @@ def _looks_like_qasm(text: str) -> bool:
 
 
 def _run_python(code: str) -> QuantumCircuit:
-    with tempfile.TemporaryDirectory() as tmp:
+    # The output goes to a second temp dir outside the submission's working directory.
+    with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as out_tmp:
         src = Path(tmp) / "submission.py"
-        out = Path(tmp) / "circuit.qpy"
+        out = Path(out_tmp) / f"{secrets.token_hex(16)}.qpy"
+        nonce = secrets.token_hex(16)
         src.write_text(code)
         env = {"PATH": os.environ.get("PATH", ""), "PYTHONHASHSEED": "0"}
         try:
             proc = subprocess.run(
-                [sys.executable, "-I", str(RUNNER), str(src), str(out)],
-                cwd=tmp, env=env, capture_output=True, text=True, timeout=PYTHON_TIMEOUT_S,
+                [sys.executable, "-I", str(RUNNER), str(src)],
+                input=f"{out}\n{nonce}\n", cwd=tmp, env=env, capture_output=True, text=True,
+                timeout=PYTHON_TIMEOUT_S,
             )
         except subprocess.TimeoutExpired as e:
             raise GradeError("timeout", f"Python submission ran over {PYTHON_TIMEOUT_S}s") from e
         if proc.returncode != 0:
             tail = (proc.stderr.strip().splitlines() or ["(no stderr)"])[-1]
             raise GradeError("parse_error", f"Python: {tail}")
+        # The runner prints this only after it serialized `qc` itself, so an early
+        # exit or a file written by the submission doesn't count (red team 1: A03).
+        if (proc.stdout.strip().splitlines() or [""])[-1] != f"RUNNER_OK {nonce}" or not out.exists():
+            raise GradeError("parse_error", "Python: runner did not finish normally")
         with out.open("rb") as f:
             circuits = qpy.load(f)
         return circuits[0]
