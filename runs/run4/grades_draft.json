@@ -1,0 +1,458 @@
+{
+  "results": [
+    {
+      "id": "v01",
+      "passed": false,
+      "reason": "wrong_state",
+      "detail": "fidelity 0.000000",
+      "fidelity": 0.0,
+      "claimed_success": true,
+      "traps": [
+        "endianness",
+        "basic"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v02",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 1.0,
+      "claimed_success": true,
+      "traps": [
+        "endianness"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "v03",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "endianness",
+        "multi_controlled"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v04",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "endianness",
+        "control_target"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v05",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "qft",
+        "gate_set"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "v06",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "qft",
+        "gate_set"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "v07",
+      "passed": false,
+      "reason": "wrong_state",
+      "detail": "fidelity 0.000000",
+      "fidelity": 1.8760342859489603e-31,
+      "claimed_success": true,
+      "traps": [
+        "qft",
+        "endianness"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v08",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "relative_phase",
+        "control_target"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v09",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "relative_phase",
+        "gate_set"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "v10",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "global_phase",
+        "gate_set"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v11",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "relative_phase"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "v12",
+      "passed": false,
+      "reason": "wrong_state",
+      "detail": "fidelity 0.037037",
+      "fidelity": 0.03703703703703697,
+      "claimed_success": false,
+      "traps": [
+        "relative_phase",
+        "endianness"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "v13",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "multi_controlled",
+        "control_target",
+        "gate_set"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "v14",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "multi_controlled"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v15",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "multi_controlled",
+        "relative_phase"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v16",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "control_target"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v17",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "multi_controlled",
+        "relative_phase",
+        "gate_set"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v18",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "grover_oracle",
+        "endianness"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "v19",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "grover_oracle"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v20",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999991,
+      "claimed_success": true,
+      "traps": [
+        "grover_oracle",
+        "endianness"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v21",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "grover_oracle",
+        "multi_controlled"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v22",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v23",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "global_phase",
+        "gate_set"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v24",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation",
+        "gate_set"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v25",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "relative_phase",
+        "gate_set"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "v26",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 1.0,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation",
+        "relative_phase"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v27",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "control_target"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "v28",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "measurement",
+        "basic"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "v29",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "gate_set",
+        "control_target"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "v30",
+      "passed": false,
+      "reason": "wrong_state",
+      "detail": "fidelity 0.081914",
+      "fidelity": 0.08191357609537758,
+      "claimed_success": false,
+      "traps": [
+        "basic"
+      ],
+      "difficulty": "hard"
+    }
+  ],
+  "summary": {
+    "overall": {
+      "passed": 18,
+      "total": 30
+    },
+    "by_trap": {
+      "basic": {
+        "passed": 1,
+        "total": 3
+      },
+      "control_target": {
+        "passed": 5,
+        "total": 6
+      },
+      "endianness": {
+        "passed": 2,
+        "total": 8
+      },
+      "gate_set": {
+        "passed": 6,
+        "total": 10
+      },
+      "global_phase": {
+        "passed": 1,
+        "total": 2
+      },
+      "grover_oracle": {
+        "passed": 3,
+        "total": 4
+      },
+      "measurement": {
+        "passed": 1,
+        "total": 1
+      },
+      "multi_controlled": {
+        "passed": 4,
+        "total": 6
+      },
+      "param_rotation": {
+        "passed": 3,
+        "total": 3
+      },
+      "qft": {
+        "passed": 0,
+        "total": 3
+      },
+      "relative_phase": {
+        "passed": 5,
+        "total": 8
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "passed": 4,
+        "total": 4
+      },
+      "hard": {
+        "passed": 2,
+        "total": 8
+      },
+      "medium": {
+        "passed": 12,
+        "total": 18
+      }
+    },
+    "claimed_success_but_failed": {
+      "count": 6,
+      "of_claimed": 21
+    }
+  }
+}

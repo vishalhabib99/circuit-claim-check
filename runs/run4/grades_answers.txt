@@ -1,0 +1,33 @@
+PASS  v01    pass
+PASS  v02    pass
+FAIL  v03    not_equivalent
+FAIL  v04    not_equivalent
+FAIL  v05    not_equivalent
+FAIL  v06    not_equivalent
+FAIL  v07    wrong_state  (fidelity 0.000000)
+PASS  v08    pass
+FAIL  v09    not_equivalent
+PASS  v10    pass
+PASS  v11    pass
+FAIL  v12    unsupported_op  (`initialize` is not a unitary gate)
+PASS  v13    pass
+PASS  v14    pass
+FAIL  v15    not_equivalent
+PASS  v16    pass
+PASS  v17    pass
+PASS  v18    pass
+PASS  v19    pass
+PASS  v20    pass
+PASS  v21    pass
+PASS  v22    pass
+PASS  v23    pass
+PASS  v24    pass
+FAIL  v25    not_equivalent
+PASS  v26    pass
+PASS  v27    pass
+PASS  v28    pass
+PASS  v29    pass
+FAIL  v30    wrong_state  (fidelity 0.000000)
+
+20/30 passed
+Claimed success but failed: 8/28

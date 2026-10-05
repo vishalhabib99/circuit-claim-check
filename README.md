@@ -27,6 +27,17 @@ Submissions can be OpenQASM 2, OpenQASM 3, or Qiskit Python that leaves the circ
 
 Each task is tagged with the trap it tests: endianness, global vs relative phase, QFT vs inverse QFT, control/target swap, measurement, multi-controlled gates, Grover/Bernstein-Vazirani oracles, parameterized rotations, gate-set limits.
 
+## Results
+
+| Run | Model, condition | Tasks | Passed | Claimed success but failed |
+|---|---|---|---|---|
+| [1](runs/run1/RESULTS.md) | Sonnet, no tools | v1 (45) | 45/45 | 0/45 |
+| [2](runs/run2/RESULTS.md) | Haiku, no tools | v1 (45) | 28/45 (39 with missing header line added, post hoc) | 13/41 (2) |
+| [3](runs/run4/RESULTS.md) | Haiku, no tools | v2 (30) | 7/30 (13 with header line added, preregistered) | 20/27 (14) |
+| [4](runs/run4/RESULTS.md) | Haiku, draft → simulator feedback → final | v2 (30) | draft 18/30 → final 20/30 | draft 6/21 → final **8/28** |
+
+**Main v2 finding:** one round of simulator feedback didn't reduce false success claims; they went from 6 to 8. In 4 of the 6 wrong drafts it claimed were right, the feedback showed the wrong behavior and the agent kept the same circuit and the same claim. Execution output isn't verification unless something compares it with the spec. The preregistered main hypothesis (H9) was not supported; details and limits in [`runs/run4/RESULTS.md`](runs/run4/RESULTS.md).
+
 ## Is the grader right?
 
 The grader was tested without any model. Every task has a reference solution, at least two **mutants** (a specific plausible mistake each: reversed qubit order, flipped angle sign, swapped control, CRZ for CP, missing QFT swap), and at least one **variant** (a different but correct construction, such as a Clifford+T Toffoli or a gate that differs only by global phase).

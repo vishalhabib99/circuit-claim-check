@@ -1,0 +1,33 @@
+FAIL  v01    wrong_state  (fidelity 0.000000)
+PASS  v02    pass
+FAIL  v03    not_equivalent
+FAIL  v04    not_equivalent
+FAIL  v05    not_equivalent
+FAIL  v06    not_equivalent
+FAIL  v07    wrong_state  (fidelity 0.000000)
+PASS  v08    pass
+PASS  v09    pass
+FAIL  v10    not_equivalent
+PASS  v11    pass
+FAIL  v12    wrong_state  (fidelity 0.037037)
+PASS  v13    pass
+PASS  v14    pass
+FAIL  v15    not_equivalent
+PASS  v16    pass
+PASS  v17    pass
+FAIL  v18    not_equivalent
+PASS  v19    pass
+PASS  v20    pass
+PASS  v21    pass
+PASS  v22    pass
+PASS  v23    pass
+PASS  v24    pass
+FAIL  v25    not_equivalent
+PASS  v26    pass
+PASS  v27    pass
+PASS  v28    pass
+PASS  v29    pass
+FAIL  v30    wrong_state  (fidelity 0.081914)
+
+18/30 passed
+Claimed success but failed: 6/21

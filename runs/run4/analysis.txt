@@ -1,0 +1,61 @@
+task  A(run3)          B-draft            B-final            changed
+v01  P pass            c=T  F wrong_state     c=T  P pass            c=T  yes
+v02  P pass            c=T  P pass            c=T  P pass            c=T  
+v03  F not_equivalent  c=T  F not_equivalent  c=T  F not_equivalent  c=T  yes
+v04  F not_equivalent  c=T  F not_equivalent  c=T  F not_equivalent  c=T  yes
+v05  F not_equivalent  c=T  F not_equivalent  c=T  F not_equivalent  c=T  yes
+v06  F not_equivalent  c=T  F not_equivalent  c=T  F not_equivalent  c=T  yes
+v07  F wrong_state     c=T  F wrong_state     c=T  F wrong_state     c=T  yes
+v08  P pass            c=T  P pass            c=T  P pass            c=T  
+v09  P pass            c=T  P pass            c=F  F not_equivalent  c=T  yes
+v10  P pass            c=T  F not_equivalent  c=F  P pass            c=T  yes
+v11  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v12  P pass            c=T  F wrong_state     c=F  F unsupported_op  c=T  yes
+v13  F parse_error     c=T  P pass            c=F  P pass            c=T  
+v14  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v15  F not_equivalent  c=F  F not_equivalent  c=F  F not_equivalent  c=T  yes
+v16  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v17  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v18  F parse_error     c=T  F not_equivalent  c=F  P pass            c=T  yes
+v19  F parse_error     c=T  P pass            c=F  P pass            c=T  
+v20  P pass            c=T  P pass            c=T  P pass            c=T  
+v21  F parse_error     c=T  P pass            c=T  P pass            c=T  yes
+v22  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v23  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v24  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v25  F parse_error     c=F  F not_equivalent  c=F  F not_equivalent  c=F  yes
+v26  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v27  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v28  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v29  F parse_error     c=T  P pass            c=T  P pass            c=T  
+v30  F parse_error     c=F  F wrong_state     c=F  F wrong_state     c=F  yes
+
+pass: A 7/30 (header-added 13/30) | B-draft 18/30 | B-final 20/30
+false success claims: A 20/27 (header-added 14) | B-draft 6/21 | B-final 8/28
+changed after feedback: 14 ['v01', 'v03', 'v04', 'v05', 'v06', 'v07', 'v09', 'v10', 'v12', 'v15', 'v18', 'v21', 'v25', 'v30']
+fixed (fail->pass): ['v01', 'v10', 'v18']  broken (pass->fail): ['v09']
+McNemar draft vs final (pass): b=3 c=1 p=0.625
+McNemar A vs B-final (pass): A-fail/B-pass=15 A-pass/B-fail=2 p=0.002
+McNemar A(header-added) vs B-final: 9 vs 2 p=0.065
+B-draft false claims: ['v01', 'v03', 'v04', 'v05', 'v06', 'v07']
+  v01: final PASS claimed=True
+  v03: final FAIL claimed=True
+  v04: final FAIL claimed=True
+  v05: final FAIL claimed=True
+  v06: final FAIL claimed=True
+  v07: final FAIL claimed=True
+B-final false claims: ['v03', 'v04', 'v05', 'v06', 'v07', 'v09', 'v12', 'v15']
+  v03: draft FAIL draft-claimed=True reason=not_equivalent changed=yes
+  v04: draft FAIL draft-claimed=True reason=not_equivalent changed=yes
+  v05: draft FAIL draft-claimed=True reason=not_equivalent changed=yes
+  v06: draft FAIL draft-claimed=True reason=not_equivalent changed=yes
+  v07: draft FAIL draft-claimed=True reason=wrong_state changed=yes
+  v09: draft PASS draft-claimed=False reason=not_equivalent changed=yes
+  v12: draft FAIL draft-claimed=False reason=unsupported_op changed=yes
+  v15: draft FAIL draft-claimed=False reason=not_equivalent changed=yes
+parse errors: A 17 draft 0 final 0
+
+# Circuit-level change (draft vs final compared as operators, up to global phase; text-only edits don't count)
+circuit changed: 9 ['v01', 'v03', 'v09', 'v10', 'v15', 'v18', 'v21', 'v25', 'v30']
+same circuit: 20
+not comparable: [('v12', 'QiskitError')]
