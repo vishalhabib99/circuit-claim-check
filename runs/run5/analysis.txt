@@ -1,0 +1,5 @@
+Run 5 (Sonnet, condition B): draft 30/30 pass, 0/30 false claims; final 30/30 pass, 0/30 false claims
+claimed_success: draft 30 final 30
+circuits changed after feedback: []
+text changed: []
+H13: not testable (draft false claims = 0 < 2). H14: not testable (no wrong drafts).

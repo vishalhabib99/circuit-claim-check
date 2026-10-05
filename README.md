@@ -35,8 +35,9 @@ Each task is tagged with the trap it tests: endianness, global vs relative phase
 | [2](runs/run2/RESULTS.md) | Haiku, no tools | v1 (45) | 28/45 (39 with missing header line added, post hoc) | 13/41 (2) |
 | [3](runs/run4/RESULTS.md) | Haiku, no tools | v2 (30) | 7/30 (13 with header line added, preregistered) | 20/27 (14) |
 | [4](runs/run4/RESULTS.md) | Haiku, draft → simulator feedback → final | v2 (30) | draft 18/30 → final 20/30 | draft 6/21 → final **8/28** |
+| [5](runs/run5/RESULTS.md) | Sonnet, draft → simulator feedback → final | v2 (30) | draft 30/30 → final 30/30 | 0/30 → 0/30 |
 
-**Main v2 finding:** one round of simulator feedback didn't reduce false success claims; they went from 6 to 8. In 4 of the 6 wrong drafts it claimed were right, the feedback showed the wrong behavior and the agent kept the same circuit and the same claim. Execution output isn't verification unless something compares it with the spec. The preregistered main hypothesis (H9) was not supported; details and limits in [`runs/run4/RESULTS.md`](runs/run4/RESULTS.md).
+**Main v2 finding:** one round of simulator feedback didn't reduce false success claims; they went from 6 to 8. In 4 of the 6 wrong drafts it claimed were right, the feedback showed the wrong behavior and the agent kept the same circuit and the same claim. Execution output isn't verification unless something compares it with the spec. The preregistered main hypothesis (H9) was not supported; details and limits in [`runs/run4/RESULTS.md`](runs/run4/RESULTS.md). Sonnet (run 5) got all 30 right before any feedback and changed nothing, so on this set the model choice mattered far more than the self-check step ([`runs/run5/RESULTS.md`](runs/run5/RESULTS.md)).
 
 ## Is the grader right?
 
