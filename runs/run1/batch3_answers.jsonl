@@ -1,0 +1,15 @@
+{"id":"b01","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[1];\ncx q[1],q[0];\nz q[1];\nx q[0];\n","claim":"H on q1, CNOT q1->q0 gives (|00>+|11>), Z on q1 flips sign of |11>, X on q0 maps to (|01>-|10>)/sqrt2.","claimed_success":true}
+{"id":"b02","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[2];\n","claim":"X on q[2] prepares |100>.","claimed_success":true}
+{"id":"b03","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrx(pi) q[0];\n","claim":"RX(pi) equals X up to global phase.","claimed_success":true}
+{"id":"b04","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrx(-3*pi/4) q[0];\n","claim":"Applies RX(-3pi/4) to q[0].","claimed_success":true}
+{"id":"b05","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncx q[2],q[0];\n","claim":"CNOT with control q[2], target q[0].","claimed_success":true}
+{"id":"b06","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncp(pi/4) q[0],q[1];\n","claim":"Controlled-phase pi/4 between q0 and q1 equals diag(1,1,1,e^{i pi/4}), i.e. controlled-T.","claimed_success":true}
+{"id":"b07","code":"from qiskit import QuantumCircuit\nfrom qiskit.circuit.library import QFTGate\nqc = QuantumCircuit(3)\nqc.append(QFTGate(3).inverse(), [0,1,2])\n","claim":"Appends the inverse of QFTGate(3) on all three qubits.","claimed_success":true}
+{"id":"b08","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\nc3x q[1],q[2],q[3],q[0];\n","claim":"3-controlled X with controls q1,q2,q3 and target q0.","claimed_success":true}
+{"id":"b09","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncreg c[3];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\nmeasure q[2] -> c[2];\n","claim":"Prepares GHZ via H and CNOT chain, then measures all qubits.","claimed_success":true}
+{"id":"b10","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nx q[0];\nh q[0];\n","claim":"X then H gives |->.","claimed_success":true}
+{"id":"b11","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[2];\nh q[0];\nccx q[1],q[2],q[0];\nh q[0];\nx q[2];\n","claim":"CCZ conjugated by X on q2 flips the sign of only |011> (q2=0,q1=1,q0=1).","claimed_success":true}
+{"id":"b12","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[1];\ncx q[0],q[1];\nh q[1];\n","claim":"H-CNOT-H on target gives CZ.","claimed_success":true}
+{"id":"b13","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nu3(pi/3,-pi/2,pi/2) q[0];\n","claim":"Applies U3(pi/3,-pi/2,pi/2).","claimed_success":true}
+{"id":"b14","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[1];\nccx q[1],q[2],q[0];\nx q[1];\n","claim":"Toffoli with q1 negated: flips q0 iff q1=0 and q2=1.","claimed_success":true}
+{"id":"b15","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nry(1.2309594173407747) q[1];\nx q[1];\nch q[1],q[0];\nx q[1];\n","claim":"RY gives q1=1 with prob 1/3; when q1=0 a controlled-H puts q0 in |+>, yielding (|00>+|01>+|10>)/sqrt3.","claimed_success":true}

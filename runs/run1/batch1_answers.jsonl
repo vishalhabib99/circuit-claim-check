@@ -1,0 +1,15 @@
+{"id":"p01","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];\n","claim":"H on q0 then CNOT q0->q1 prepares the Bell state.","claimed_success":true}
+{"id":"p02","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nx q[0];\n","claim":"X on q0 gives |01> (q0 is the rightmost bit).","claimed_success":true}
+{"id":"p03","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nx q[0];\nh q[0];\n","claim":"X then H gives |->.","claimed_success":true}
+{"id":"p04","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(pi) q[0];\n","claim":"RZ(pi) equals Z up to global phase.","claimed_success":true}
+{"id":"p05","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nry(pi/3) q[0];\n","claim":"Applies RY(pi/3) to q0.","claimed_success":true}
+{"id":"p06","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncx q[1],q[0];\n","claim":"CNOT with control q1 and target q0.","claimed_success":true}
+{"id":"p07","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\n","claim":"H then a CNOT chain prepares the 3-qubit GHZ state.","claimed_success":true}
+{"id":"p08","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncu1(pi/2) q[0],q[1];\n","claim":"Controlled phase of pi/2 between q0 and q1 (diag(1,1,1,i)).","claimed_success":true}
+{"id":"p09","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[1];\ncu1(pi/2) q[0],q[1];\nh q[0];\nswap q[0],q[1];\n","claim":"Standard 2-qubit QFT: H on q1, controlled phase pi/2, H on q0, then final swap.","claimed_success":true}
+{"id":"p10","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nswap q[0],q[1];\nh q[0];\ncu1(-pi/2) q[0],q[1];\nh q[1];\n","claim":"Exact inverse of the 2-qubit QFT circuit: gates reversed with phase negated.","claimed_success":true}
+{"id":"p11","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nccx q[0],q[1],q[2];\n","claim":"Toffoli with controls q0,q1 and target q2.","claimed_success":true}
+{"id":"p12","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\ncx q[0],q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n","claim":"Prepares the Bell state and measures both qubits into c.","claimed_success":true}
+{"id":"p13","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\nx q[1];\n","claim":"H on q0 gives |+>, X on q1 gives |1>, no measurements.","claimed_success":true}
+{"id":"p14","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncx q[0],q[1];\ncx q[1],q[0];\ncx q[0],q[1];\n","claim":"Three alternating CNOTs implement a SWAP.","claimed_success":true}
+{"id":"p15","code":"OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\nc3x q[0],q[1],q[2],q[3];\n","claim":"Triple-controlled X with controls q0,q1,q2 and target q3.","claimed_success":true}
