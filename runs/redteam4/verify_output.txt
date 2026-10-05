@@ -1,0 +1,38 @@
+=== p06 (unitary, n_qubits=2) ===
+  submitted circuit ops (full): ['cx', 'barrier']
+  grader silently DROPS these ops (IGNORED_OPS): ['barrier']
+  reference ops:               ['cx']
+  submitted FULL unitary == reference (up to phase)? False  (max elementwise diff after phase-align ~1.000)
+  => submitted circuit is NOT the task's circuit, yet grader PASSED it: CONFIRMED WRONG-PASS = True
+
+=== p01 (statevector, n_qubits=2) ===
+  submitted circuit ops (full): ['h', 'cx', 'barrier']
+  grader silently DROPS these ops (IGNORED_OPS): ['barrier']
+  reference ops:               ['h', 'cx']
+  submitted FULL state: [0.   +0.j 0.707+0.j 0.707+0.j 0.   +0.j]
+  reference      state: [0.707+0.j 0.   +0.j 0.   +0.j 0.707+0.j]
+  submitted FULL state == reference (up to phase)? False
+  => submitted circuit is NOT the task's circuit, yet grader PASSED it: CONFIRMED WRONG-PASS = True
+
+=== p11 (unitary, n_qubits=3) ===
+  submitted circuit ops (full): ['ccx', 'delay']
+  grader silently DROPS these ops (IGNORED_OPS): ['delay']
+  reference ops:               ['ccx']
+  submitted FULL unitary == reference (up to phase)? False  (max elementwise diff after phase-align ~1.000)
+  => submitted circuit is NOT the task's circuit, yet grader PASSED it: CONFIRMED WRONG-PASS = True
+
+=== p25 (unitary, n_qubits=1) ===
+  submitted circuit ops (full): ['sdg', 'barrier']
+  grader silently DROPS these ops (IGNORED_OPS): ['barrier']
+  reference ops:               ['sdg']
+  submitted FULL unitary == reference (up to phase)? False  (max elementwise diff after phase-align ~1.000)
+  => submitted circuit is NOT the task's circuit, yet grader PASSED it: CONFIRMED WRONG-PASS = True
+
+=== p14 (unitary, n_qubits=2) ===
+  submitted circuit ops (full): ['cx', 'cx', 'cx', 'barrier']
+  grader silently DROPS these ops (IGNORED_OPS): ['barrier']
+  reference ops:               ['cx', 'cx', 'cx']
+  submitted FULL unitary == reference (up to phase)? False  (max elementwise diff after phase-align ~1.000)
+  => submitted circuit is NOT the task's circuit, yet grader PASSED it: CONFIRMED WRONG-PASS = True
+
+Independent confirmed wrong-passes: 5/5

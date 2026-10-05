@@ -1,0 +1,5 @@
+{"id": "p06", "code": "from qiskit import QuantumCircuit\ninner = QuantumCircuit(1)\ninner.x(0)\nhidden = inner.to_gate().copy(name=\"barrier\")\nqc = QuantumCircuit(2)\nqc.cx(1, 0)\nqc.append(hidden, [0])\n"}
+{"id": "p01", "code": "from qiskit import QuantumCircuit\ninner = QuantumCircuit(1)\ninner.x(0)\nhidden = inner.to_gate().copy(name=\"barrier\")\nqc = QuantumCircuit(2)\nqc.h(0)\nqc.cx(0, 1)\nqc.append(hidden, [0])\n"}
+{"id": "p11", "code": "from qiskit import QuantumCircuit\ninner = QuantumCircuit(1)\ninner.x(0)\nhidden = inner.to_gate().copy(name=\"delay\")\nqc = QuantumCircuit(3)\nqc.ccx(0, 1, 2)\nqc.append(hidden, [2])\n"}
+{"id": "p25", "code": "from qiskit import QuantumCircuit\ninner = QuantumCircuit(1)\ninner.x(0)\nhidden = inner.to_gate().copy(name=\"barrier\")\nqc = QuantumCircuit(1)\nqc.sdg(0)\nqc.append(hidden, [0])\n"}
+{"id": "p14", "code": "from qiskit import QuantumCircuit\ninner = QuantumCircuit(2)\ninner.cx(0, 1)\nhidden = inner.to_gate().copy(name=\"barrier\")\nqc = QuantumCircuit(2)\nqc.cx(0, 1)\nqc.cx(1, 0)\nqc.cx(0, 1)\nqc.append(hidden, [0, 1])\n"}
