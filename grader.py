@@ -82,7 +82,14 @@ def load_circuit(code: str) -> QuantumCircuit:
             return qasm3.loads(code)
         except Exception as e:  # noqa: BLE001
             raise GradeError("parse_error", f"QASM 3: {e}") from e
+    if _looks_like_qasm(stripped):
+        raise GradeError("parse_error", "looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one)")
     return _run_python(code)
+
+
+def _looks_like_qasm(text: str) -> bool:
+    first = next((ln.strip() for ln in text.splitlines() if ln.strip() and not ln.strip().startswith("//")), "")
+    return first.startswith(("include ", "qreg ", "qubit[", "qubit ", "gate ", "creg "))
 
 
 def _run_python(code: str) -> QuantumCircuit:
@@ -214,7 +221,10 @@ def grade(tasks: list[dict], submissions: list[dict]) -> list[Result]:
         if task is None:
             results.append(Result(s["id"], False, "unknown_task"))
             continue
-        passed, reason, detail, fid = grade_one(task, s["code"])
+        try:
+            passed, reason, detail, fid = grade_one(task, s["code"])
+        except Exception as e:  # noqa: BLE001 - one bad submission must not stop the run
+            passed, reason, detail, fid = False, "grader_error", f"{type(e).__name__}: {e}", None
         results.append(Result(
             s["id"], passed, reason, detail, fid, s.get("claimed_success"),
             task.get("traps", []), task.get("difficulty", ""),
