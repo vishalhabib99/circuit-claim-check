@@ -1,0 +1,5 @@
+p06 [unitary]: graded_matches_ref=True  declared_qc_matches_ref=False  -> WRONG-PASS=True
+p01 [statevector]: graded_matches_ref=True  declared_qc_matches_ref=False  -> WRONG-PASS=True
+p11 [unitary]: graded_matches_ref=True  declared_qc_matches_ref=False  -> WRONG-PASS=True
+
+confirmed wrong-passes: 3 / 3
