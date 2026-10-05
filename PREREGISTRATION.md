@@ -95,6 +95,8 @@ Red team 2 got 3 wrong circuits graded `pass`, all through gaps in the red team 
 
 Re-graded both runs: no verdict changed, and no real answer was rejected by the Python subset (`runs/*/answers*_regraded_after_rt2.txt`).
 
+**Red team 3** (approved by Vishal 2026-10-05) runs against grader 4054378 under the same bar: 0 confirmed wrong-passes, each one shown wrong independently of `grader.py`. It gets both earlier findings files. If it finds 0, the README may say the grader passed a red team. If it finds any, they get fixed and reported the same way, and the claim stays unmade.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.
