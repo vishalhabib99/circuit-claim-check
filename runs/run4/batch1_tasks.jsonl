@@ -1,0 +1,10 @@
+{"id": "v01", "n_qubits": 3, "prompt": "Prepare (|100> + |011>)/sqrt(2) (Qiskit convention: the rightmost character is q[0])."}
+{"id": "v02", "n_qubits": 4, "prompt": "Prepare the basis state that encodes the integer 11 on q[0..3], with q[0] as the least significant bit."}
+{"id": "v03", "n_qubits": 3, "prompt": "Implement the 3-bit increment |x> -> |x + 1 mod 8> on q[0..2], with q[0] as the least significant bit."}
+{"id": "v04", "n_qubits": 2, "prompt": "Implement the two-qubit unitary whose matrix, in Qiskit's basis ordering, is [[1,0,0,0],[0,0,0,1],[0,0,1,0],[0,1,0,0]]."}
+{"id": "v05", "n_qubits": 3, "prompt": "Implement the inverse of Qiskit's QFTGate(3) on q[0..2], using only H, CP (controlled-phase) and SWAP gates."}
+{"id": "v06", "n_qubits": 4, "prompt": "Implement Qiskit's QFTGate(4) on q[0..3], using only H, CP (controlled-phase) and SWAP gates."}
+{"id": "v07", "n_qubits": 3, "prompt": "Prepare the state obtained by applying Qiskit's QFTGate(3) to the basis state |110> (Qiskit convention: the rightmost character is q[0])."}
+{"id": "v08", "n_qubits": 2, "prompt": "Apply a controlled-RZ(pi/2) with control q[1] and target q[0]."}
+{"id": "v09", "n_qubits": 2, "prompt": "Implement CP(pi/4) (controlled-phase) between q[0] and q[1] using only CX and RZ gates. Global phase does not matter."}
+{"id": "v10", "n_qubits": 1, "prompt": "Implement the SX (square root of X) gate using only H and P (phase) gates."}
