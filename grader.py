@@ -32,6 +32,7 @@ import tempfile
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
+import numpy as np
 from qiskit import QuantumCircuit, qasm2, qasm3, qpy
 from qiskit.quantum_info import Operator, Statevector, state_fidelity
 
@@ -40,6 +41,12 @@ PYTHON_TIMEOUT_S = 60
 RUNNER = Path(__file__).with_name("_runner.py")
 # Ops that never change the quantum state being graded.
 IGNORED_OPS = {"barrier", "delay"}
+# Ancilla rule (added before any agent run; see PREREGISTRATION.md): qubits
+# q[0..n-1] are the task's qubits, and up to MAX_ANCILLAS extra qubits after
+# them are allowed if they start in |0>, end in |0> for every input, and are
+# never measured. Capped so the full unitary stays small enough to build.
+MAX_ANCILLAS = 3
+LEAK_TOL = 1e-6
 
 
 class GradeError(Exception):
@@ -144,12 +151,17 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
     except GradeError as e:
         return False, e.reason, e.detail, None
     n = task["n_qubits"]
-    if sub.num_qubits != n:
+    if sub.num_qubits < n:
         return False, "wrong_qubit_count", f"expected {n}, got {sub.num_qubits}", None
+    n_anc = sub.num_qubits - n
+    if n_anc > MAX_ANCILLAS:
+        return False, "too_many_ancillas", f"{n_anc} extra qubits; at most {MAX_ANCILLAS} allowed", None
     try:
         sub_u, measured = _final_measure_split(sub)
     except GradeError as e:
         return False, e.reason, e.detail, None
+    if measured & set(range(n, n + n_anc)):
+        return False, "ancilla_measured", f"ancilla qubits measured: {sorted(measured - set(range(n)))}", None
 
     policy = task.get("measure", "allow")
     if policy == "forbid" and measured:
@@ -166,13 +178,23 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
 
     ref, _ = _final_measure_split(load_circuit(task["reference"]))
     mode = task["mode"]
+    dim = 2 ** n  # Qiskit is little-endian: index = task bits + 2**n * ancilla bits
     try:
         if mode == "unitary":
-            ok = Operator(sub_u).equiv(Operator(ref))
+            full = Operator(sub_u).data
+            # Columns with ancillas in |0>; any amplitude left on ancilla != 0 is a dirty ancilla.
+            leak = float(np.linalg.norm(full[dim:, :dim])) if n_anc else 0.0
+            if leak > LEAK_TOL:
+                return False, "dirty_ancilla", f"ancillas not returned to |0> (leak {leak:.2e})", None
+            ok = Operator(full[:dim, :dim]).equiv(Operator(ref))
             return ok, "pass" if ok else "not_equivalent", "", None
         if mode == "statevector":
-            zero = Statevector.from_label("0" * n)
-            fid = float(state_fidelity(zero.evolve(sub_u), zero.evolve(ref)))
+            out = Statevector.from_label("0" * sub_u.num_qubits).evolve(sub_u).data
+            leak = float(np.linalg.norm(out[dim:])) if n_anc else 0.0
+            if leak > LEAK_TOL:
+                return False, "dirty_ancilla", f"ancillas not returned to |0> (leak {leak:.2e})", None
+            target = Statevector.from_label("0" * n).evolve(ref)
+            fid = float(state_fidelity(Statevector(out[:dim]), target))
             ok = fid >= 1 - FIDELITY_TOL
             return ok, "pass" if ok else "wrong_state", f"fidelity {fid:.6f}", fid
     except Exception as e:  # noqa: BLE001 - e.g. an opaque gate with no matrix

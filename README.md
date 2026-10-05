@@ -55,5 +55,5 @@ A submission line: `{"id": "b01", "code": "OPENQASM 2.0; ...", "claim": "Prepare
 - **Python submissions are not sandboxed for security.** They run in a separate `python -I` process with a stripped environment, a temp working directory and a 60-second timeout. That stops hangs and accidental state leaks. It does not stop a hostile submission from reading files or using the network. Only grade code you'd run yourself.
 - **Exact comparison builds full matrices,** so it's practical up to roughly 10–12 qubits. Every task here uses 4 or fewer.
 - **Statevector tasks grade the output, not the method.** "Prepare GHZ" passes with any circuit that reaches GHZ. Tasks where the method matters are graded as unitaries.
-- **Exact qubit count.** A correct circuit that uses an extra ancilla fails as `wrong_qubit_count`.
+- **Ancillas.** Up to 3 extra qubits after the task's qubits are allowed if they start and end in |0> for every input and are never measured (`dirty_ancilla`, `ancilla_measured`, `too_many_ancillas` otherwise). More would make the full unitary too large to build exactly.
 - **Small and single-author.** 45 tasks, all written by one model family.

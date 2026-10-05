@@ -58,10 +58,81 @@ def test_parse_error_reported():
     assert (passed, reason) == (False, "parse_error")
 
 
-def test_wrong_qubit_count_reported():
-    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\n'
+def test_too_few_qubits_reported():
+    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[1];\nh q[0];\n'
     passed, reason, _, _ = grader.grade_one(BELL, code)
     assert (passed, reason) == (False, "wrong_qubit_count")
+
+
+def test_idle_clean_ancilla_passes():
+    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\n'
+    passed, reason, _, _ = grader.grade_one(BELL, code)
+    assert (passed, reason) == (True, "pass")
+
+
+def test_too_many_ancillas_reported():
+    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[6];\nh q[0];\ncx q[0],q[1];\n'
+    passed, reason, _, _ = grader.grade_one(BELL, code)
+    assert (passed, reason) == (False, "too_many_ancillas")
+
+
+def test_dirty_ancilla_fails_statevector():
+    # Bell pair on task qubits, but the ancilla is left in |1>.
+    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\nx q[2];\n'
+    passed, reason, _, _ = grader.grade_one(BELL, code)
+    assert (passed, reason) == (False, "dirty_ancilla")
+
+
+def test_entangled_ancilla_fails_statevector():
+    # Copies q[0] into the ancilla and never uncomputes it: task qubits alone are mixed.
+    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\ncx q[0],q[2];\n'
+    passed, reason, _, _ = grader.grade_one(BELL, code)
+    assert (passed, reason) == (False, "dirty_ancilla")
+
+
+def test_measured_ancilla_fails():
+    code = 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[3];\ncreg c[3];\nh q[0];\ncx q[0],q[1];\nmeasure q[2] -> c[2];\n'
+    passed, reason, _, _ = grader.grade_one(BELL, code)
+    assert (passed, reason) == (False, "ancilla_measured")
+
+
+TOFFOLI_TASK = {
+    "id": "t_ccx", "mode": "unitary", "n_qubits": 3,
+    "reference": 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[3];\nccx q[0],q[1],q[2];\n',
+}
+C3X_TASK = {
+    "id": "t_c3x", "mode": "unitary", "n_qubits": 4,
+    "reference": 'OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[4];\nc3x q[0],q[1],q[2],q[3];\n',
+}
+
+
+def test_c3x_via_clean_ancilla_passes_unitary():
+    # Standard compute / apply / uncompute with one ancilla (q[4]).
+    code = ('OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[5];\n'
+            'ccx q[0],q[1],q[4];\nccx q[2],q[4],q[3];\nccx q[0],q[1],q[4];\n')
+    passed, reason, _, _ = grader.grade_one(C3X_TASK, code)
+    assert (passed, reason) == (True, "pass")
+
+
+def test_c3x_without_uncompute_is_dirty_unitary():
+    code = ('OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[5];\n'
+            'ccx q[0],q[1],q[4];\nccx q[2],q[4],q[3];\n')
+    passed, reason, _, _ = grader.grade_one(C3X_TASK, code)
+    assert (passed, reason) == (False, "dirty_ancilla")
+
+
+def test_clean_ancilla_but_wrong_gate_is_not_equivalent():
+    code = ('OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[4];\n'
+            'ccx q[0],q[1],q[3];\ncx q[3],q[2];\nccx q[0],q[1],q[3];\ncx q[0],q[2];\n')
+    passed, reason, _, _ = grader.grade_one(TOFFOLI_TASK, code)
+    assert (passed, reason) == (False, "not_equivalent")
+
+
+def test_toffoli_via_clean_ancilla_passes():
+    code = ('OPENQASM 2.0;\ninclude "qelib1.inc";\nqreg q[4];\n'
+            'ccx q[0],q[1],q[3];\ncx q[3],q[2];\nccx q[0],q[1],q[3];\n')
+    passed, reason, _, _ = grader.grade_one(TOFFOLI_TASK, code)
+    assert (passed, reason) == (True, "pass")
 
 
 def test_python_without_qc_variable_is_parse_error():

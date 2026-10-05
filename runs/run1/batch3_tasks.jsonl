@@ -1,0 +1,15 @@
+{"id": "b01", "n_qubits": 2, "prompt": "Prepare the Bell state (|01> - |10>)/sqrt(2) (Qiskit convention: rightmost character is q[0])."}
+{"id": "b02", "n_qubits": 3, "prompt": "Prepare the basis state |100> (Qiskit convention: rightmost character is q[0])."}
+{"id": "b03", "n_qubits": 1, "prompt": "Implement the Pauli X gate using a single RX rotation. Global phase does not matter."}
+{"id": "b04", "n_qubits": 1, "prompt": "Apply RX(-3*pi/4) to q[0]."}
+{"id": "b05", "n_qubits": 3, "prompt": "Apply a CNOT with control q[2] and target q[0]."}
+{"id": "b06", "n_qubits": 2, "prompt": "Apply a controlled-T gate: control q[0], target q[1] (diag(1, 1, 1, e^(i*pi/4)))."}
+{"id": "b07", "n_qubits": 3, "prompt": "Implement the inverse of the 3-qubit QFT defined by qiskit.circuit.library.QFTGate."}
+{"id": "b08", "n_qubits": 4, "prompt": "Apply an X gate to q[0] controlled on q[1], q[2] and q[3] all being 1."}
+{"id": "b09", "n_qubits": 3, "prompt": "Prepare the 3-qubit GHZ state (|000> + |111>)/sqrt(2) and measure every qubit."}
+{"id": "b10", "n_qubits": 1, "prompt": "Prepare |-> by applying H to |1>. Return the circuit without any measurement."}
+{"id": "b11", "n_qubits": 3, "prompt": "Build a phase oracle on 3 qubits that flips the sign of exactly the basis state |011> (Qiskit convention: rightmost character is q[0])."}
+{"id": "b12", "n_qubits": 2, "prompt": "Implement a CZ gate on q[0], q[1] using only H and CNOT gates."}
+{"id": "b13", "n_qubits": 1, "prompt": "Apply U(theta=pi/3, phi=-pi/2, lambda=pi/2) to q[0] (Qiskit's U / U3 parameter order)."}
+{"id": "b14", "n_qubits": 3, "prompt": "Flip q[0] if and only if q[1] = 0 and q[2] = 1."}
+{"id": "b15", "n_qubits": 2, "prompt": "Prepare (|00> + |01> + |10>)/sqrt(3) (Qiskit convention: rightmost character is q[0])."}

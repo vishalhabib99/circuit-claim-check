@@ -1,0 +1,15 @@
+{"id": "p16", "n_qubits": 3, "prompt": "Build a phase oracle on 3 qubits that flips the sign of exactly the basis state |110> (Qiskit convention: rightmost character is q[0]) and leaves every other basis state unchanged."}
+{"id": "p17", "n_qubits": 2, "prompt": "Implement the 2-qubit Grover diffusion operator 2|s><s| - I, where |s> is the uniform superposition. Global phase does not matter."}
+{"id": "p18", "n_qubits": 3, "prompt": "Prepare the 3-qubit W state (|001> + |010> + |100>)/sqrt(3)."}
+{"id": "p19", "n_qubits": 3, "prompt": "Implement the 3-qubit quantum Fourier transform as defined by qiskit.circuit.library.QFTGate."}
+{"id": "p20", "n_qubits": 2, "prompt": "Apply RZZ(pi/4) between q[0] and q[1]."}
+{"id": "p21", "n_qubits": 1, "prompt": "Apply the gate U(theta=pi/2, phi=pi/4, lambda=pi/8) to q[0] (Qiskit's U / U3 parameter order)."}
+{"id": "p22", "n_qubits": 2, "prompt": "Apply a controlled-Hadamard with control q[1] and target q[0]."}
+{"id": "p23", "n_qubits": 3, "prompt": "Prepare the basis state |110> (Qiskit convention: rightmost character is q[0])."}
+{"id": "p24", "n_qubits": 3, "prompt": "Flip q[2] if and only if q[0] = 1 and q[1] = 0. Leave every other case unchanged."}
+{"id": "p25", "n_qubits": 1, "prompt": "Apply S-dagger (the inverse of the S gate) to q[0]. Global phase does not matter."}
+{"id": "p26", "n_qubits": 1, "prompt": "Prepare the state (|0> + i|1>)/sqrt(2)."}
+{"id": "p27", "n_qubits": 3, "prompt": "Apply a doubly-controlled Z (CCZ) on q[0], q[1], q[2]."}
+{"id": "p28", "n_qubits": 3, "prompt": "Build the Bernstein-Vazirani phase oracle |x> -> (-1)^(s.x) |x> for secret s = 110 (Qiskit convention: the rightmost bit of s goes with q[0])."}
+{"id": "p29", "n_qubits": 3, "prompt": "In a 3-qubit register, swap the states of q[0] and q[2] and leave q[1] untouched."}
+{"id": "p30", "n_qubits": 2, "prompt": "Apply a controlled-RY(pi/2) with control q[0] and target q[1]."}

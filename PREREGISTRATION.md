@@ -55,6 +55,12 @@ The blind set's mutants and variants were committed (8dcb32a) before the grader 
 - Blind task text is not edited.
 - If an agent run exposes a grader bug, the fix gets its own commit, the bug is logged, and **every affected result is reported both before and after the fix**.
 
+## Amendment 1 (2026-10-05, before any agent run): ancilla rule and run setup
+
+**Ancillas.** q[0..n-1] are the task's qubits. Up to 3 extra qubits after them are allowed if they start in |0>, end in |0> for every input (unitary tasks: the block of the full unitary that maps ancilla-|0> inputs to ancilla-non-|0> outputs must be zero; state tasks: no amplitude may remain on ancilla-non-|0> states), and are never measured. New failure reasons: `too_many_ancillas`, `dirty_ancilla`, `ancilla_measured`. Fewer than n qubits is still `wrong_qubit_count`. Decided by Vishal before any agent output existed. The grader validation was re-run on the blind set with this rule, and the results were unchanged: references 15/15, mutants 30/30, variants 15/15 (`evals/blind_grader_check_ancilla_rule.txt`).
+
+**Run 1 (approved by Vishal 2026-10-05):** condition A only, one model (Claude Sonnet via Claude Code subagents, Pro plan), all 45 tasks, one attempt each, in 3 batches of 15 (pilot p01-p15, pilot p16-p30, blind b01-b15). Each subagent sees only the task id, `prompt` and `n_qubits`, plus fixed instructions (`runs/instructions.md`). It may make exactly one tool call, writing its answers file, and no other tool calls, so it can't run code or read the repo. The tool-call count reported for each subagent is logged in the run notes as evidence. Graded once, at the grader commit recorded in `runs/run1/NOTES.md`.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.

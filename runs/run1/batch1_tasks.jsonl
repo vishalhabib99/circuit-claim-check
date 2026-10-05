@@ -1,0 +1,15 @@
+{"id": "p01", "n_qubits": 2, "prompt": "Prepare the Bell state (|00> + |11>)/sqrt(2) on qubits q[0] and q[1]."}
+{"id": "p02", "n_qubits": 2, "prompt": "Prepare the computational basis state |01> using Qiskit's bit-string convention (the rightmost character is q[0])."}
+{"id": "p03", "n_qubits": 1, "prompt": "Prepare the single-qubit state |-> = (|0> - |1>)/sqrt(2)."}
+{"id": "p04", "n_qubits": 1, "prompt": "Implement the Pauli Z gate using a single RZ rotation. Global phase does not matter."}
+{"id": "p05", "n_qubits": 1, "prompt": "Apply RY(pi/3) to q[0]."}
+{"id": "p06", "n_qubits": 2, "prompt": "Apply a CNOT with control q[1] and target q[0]."}
+{"id": "p07", "n_qubits": 3, "prompt": "Prepare the 3-qubit GHZ state (|000> + |111>)/sqrt(2)."}
+{"id": "p08", "n_qubits": 2, "prompt": "Apply a controlled-phase gate CP(pi/2) between q[0] and q[1] (diag(1, 1, 1, i))."}
+{"id": "p09", "n_qubits": 2, "prompt": "Implement the 2-qubit quantum Fourier transform as defined by qiskit.circuit.library.QFTGate (including its final qubit reversal)."}
+{"id": "p10", "n_qubits": 2, "prompt": "Implement the inverse of the 2-qubit QFT defined by qiskit.circuit.library.QFTGate."}
+{"id": "p11", "n_qubits": 3, "prompt": "Apply a Toffoli (CCX) gate with controls q[0], q[1] and target q[2]."}
+{"id": "p12", "n_qubits": 2, "prompt": "Prepare the Bell state (|00> + |11>)/sqrt(2) and measure both qubits into classical bits."}
+{"id": "p13", "n_qubits": 2, "prompt": "Prepare |+> on q[0] and |1> on q[1]. Return only the state-preparation circuit: no measurements."}
+{"id": "p14", "n_qubits": 2, "prompt": "Swap the states of q[0] and q[1] using only CNOT gates."}
+{"id": "p15", "n_qubits": 4, "prompt": "Apply an X gate to q[3] controlled on q[0], q[1] and q[2] all being 1."}
