@@ -85,6 +85,8 @@ Red team 1 got 16 wrong circuits graded `pass` (`runs/redteam1/FINDINGS.md`). Fi
 8. the register named `q` holds the task's qubits wherever it is declared (A16, W2)
 9. **task metadata added after results were seen:** `allowed_gates`/`max_gates` on p04 (`rz`, 1), b03 (`rx`, 1) and b10 (`x`, `h`, 2). These rules were already in the task text ("a single RZ rotation", "a single RX rotation", "by applying H to |1>"), but the grader didn't enforce them. **Task text is unchanged.** Because this changes how two blind tasks are graded after results, runs 1 and 2 are reported under both the old and the new grader. Three fixture "variants" were actually breaking those rules (plain Z, plain X, H then Z, the same as attacks A10-A12). They are relabeled as mutants, and correct variants were added in their place.
 
+**Red team 2** runs against the fixed grader under the same bar as red team 1 (0 confirmed wrong-passes, each one shown wrong independently of `grader.py`). It gets red team 1's findings, so it knows what has already been tried.
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.
