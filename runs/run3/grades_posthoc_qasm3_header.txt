@@ -1,0 +1,33 @@
+PASS  v01    pass
+PASS  v02    pass
+FAIL  v03    not_equivalent
+FAIL  v04    not_equivalent
+FAIL  v05    not_equivalent
+FAIL  v06    not_equivalent
+FAIL  v07    wrong_state  (fidelity 0.036612)
+PASS  v08    pass
+PASS  v09    pass
+PASS  v10    pass
+PASS  v11    pass
+PASS  v12    pass
+FAIL  v13    not_equivalent
+PASS  v14    pass
+FAIL  v15    not_equivalent
+PASS  v16    pass
+PASS  v17    pass
+PASS  v18    pass
+PASS  v19    pass
+PASS  v20    pass
+FAIL  v21    parse_error  (QASM 3: )
+FAIL  v22    parse_error  (QASM 3: )
+FAIL  v23    parse_error  (QASM 3: )
+FAIL  v24    parse_error  (QASM 3: )
+FAIL  v25    parse_error  (QASM 3: )
+FAIL  v26    parse_error  (QASM 3: )
+FAIL  v27    parse_error  (QASM 3: )
+FAIL  v28    parse_error  (QASM 3: )
+FAIL  v29    parse_error  (QASM 3: )
+FAIL  v30    parse_error  (QASM 3: )
+
+13/30 passed
+Claimed success but failed: 14/27
