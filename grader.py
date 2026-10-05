@@ -188,6 +188,26 @@ def _behaves_like_standard(op) -> bool:
         return False
 
 
+def _task_register_first(qc: QuantumCircuit) -> QuantumCircuit:
+    """Put the register named `q` first, so q[0..n-1] are the task's qubits.
+
+    The instructions name the task's qubits q[0]..q[n-1]. Grading by position
+    alone let `qreg r[1]; qreg q[2];` treat r[0] as q[0], passing a wrong answer
+    and failing a right one (red team 1: A16, W2).
+    """
+    task_reg = next((r for r in qc.qregs if r.name == "q"), None)
+    if task_reg is None:
+        return qc
+    order = list(task_reg) + [b for b in qc.qubits if b not in set(task_reg)]
+    if order == list(qc.qubits):
+        return qc
+    index = {b: i for i, b in enumerate(order)}
+    out = QuantumCircuit(len(order), qc.num_clbits, global_phase=qc.global_phase)
+    for inst in qc.data:
+        out.append(inst.operation, [index[b] for b in inst.qubits], [qc.find_bit(c).index for c in inst.clbits])
+    return out
+
+
 def _final_measure_split(qc: QuantumCircuit) -> tuple[QuantumCircuit, set[int]]:
     """Return (circuit without final measurements, qubits measured at the end).
 
@@ -240,6 +260,7 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
         return False, "too_many_ancillas", f"{n_anc} extra qubits; at most {MAX_ANCILLAS} allowed", None
     try:
         _check_only_gates(sub)
+        sub = _task_register_first(sub)
         sub_u, measured = _final_measure_split(sub)
     except GradeError as e:
         return False, e.reason, e.detail, None
