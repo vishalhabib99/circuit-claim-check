@@ -1,0 +1,94 @@
+{"id": "p01", "kind": "mutant", "note": "only H, no entangling gate", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\n"}
+{"id": "p01", "kind": "mutant", "note": "extra Z gives (|00> - |11>)/sqrt(2)", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];\nz q[0];\n"}
+{"id": "p01", "kind": "variant", "note": "H on q[1], CNOT q[1]->q[0]", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[1];\ncx q[1],q[0];\n"}
+{"id": "p02", "kind": "mutant", "note": "big-endian reading: flips q[1]", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nx q[1];\n"}
+{"id": "p02", "kind": "mutant", "note": "flips both", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nx q[0];\nx q[1];\n"}
+{"id": "p02", "kind": "variant", "note": "HZH = X on q[0]", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\nz q[0];\nh q[0];\n"}
+{"id": "p03", "kind": "mutant", "note": "|+> instead of |->", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nh q[0];\n"}
+{"id": "p03", "kind": "mutant", "note": "(|0> + i|1>)/sqrt(2) instead", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nh q[0];\ns q[0];\n"}
+{"id": "p03", "kind": "variant", "note": "H then Z", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nh q[0];\nz q[0];\n"}
+{"id": "p04", "kind": "mutant", "note": "quarter turn: RZ(pi/2) is S up to phase, not Z", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(pi/2) q[0];\n"}
+{"id": "p04", "kind": "mutant", "note": "wrong axis", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrx(pi) q[0];\n"}
+{"id": "p04", "kind": "variant", "note": "plain Z gate (differs from RZ(pi) only by global phase)", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nz q[0];\n"}
+{"id": "p04", "kind": "variant", "note": "RZ(-pi), same up to global phase", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(-pi) q[0];\n"}
+{"id": "p05", "kind": "mutant", "note": "sign flipped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nry(-pi/3) q[0];\n"}
+{"id": "p05", "kind": "mutant", "note": "wrong axis", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrx(pi/3) q[0];\n"}
+{"id": "p05", "kind": "variant", "note": "U3(pi/3, 0, 0) equals RY(pi/3)", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nu3(pi/3,0,0) q[0];\n"}
+{"id": "p06", "kind": "mutant", "note": "control and target swapped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncx q[0],q[1];\n"}
+{"id": "p06", "kind": "mutant", "note": "SWAP instead", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nswap q[0],q[1];\n"}
+{"id": "p06", "kind": "variant", "note": "H-CZ-H on the target", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncz q[1],q[0];\nh q[0];\n"}
+{"id": "p06", "kind": "variant", "note": "reversed CNOT conjugated by Hadamards", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\nh q[1];\ncx q[0],q[1];\nh q[0];\nh q[1];\n"}
+{"id": "p07", "kind": "mutant", "note": "last CNOT missing", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\n"}
+{"id": "p07", "kind": "mutant", "note": "extra S: (|000> + i|111>)/sqrt(2)", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\ns q[0];\n"}
+{"id": "p07", "kind": "variant", "note": "fan-out from q[0], other order", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[0];\ncx q[0],q[2];\ncx q[0],q[1];\n"}
+{"id": "p08", "kind": "mutant", "note": "CRZ(pi/2): the target's global phase becomes a relative phase", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncrz(pi/2) q[0],q[1];\n"}
+{"id": "p08", "kind": "mutant", "note": "sign flipped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncp(-pi/2) q[0],q[1];\n"}
+{"id": "p08", "kind": "variant", "note": "CP is symmetric in its qubits", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncp(pi/2) q[1],q[0];\n"}
+{"id": "p08", "kind": "variant", "note": "CU1 is the legacy name for CP", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncu1(pi/2) q[0],q[1];\n"}
+{"id": "p09", "kind": "mutant", "note": "inverse QFT instead", "code": "from qiskit import QuantumCircuit\nfrom qiskit.circuit.library import QFTGate\nqc = QuantumCircuit(2)\nqc.append(QFTGate(2).inverse(), [0, 1])\n"}
+{"id": "p09", "kind": "mutant", "note": "final swap missing", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[1];\ncp(pi/2) q[0],q[1];\nh q[0];\n"}
+{"id": "p09", "kind": "variant", "note": "hand-built: H, CP, H, SWAP", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[1];\ncp(pi/2) q[0],q[1];\nh q[0];\nswap q[0],q[1];\n"}
+{"id": "p10", "kind": "mutant", "note": "forward QFT instead", "code": "from qiskit import QuantumCircuit\nfrom qiskit.circuit.library import QFTGate\nqc = QuantumCircuit(2)\nqc.append(QFTGate(2), [0, 1])\n"}
+{"id": "p10", "kind": "mutant", "note": "phase sign not flipped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nswap q[0],q[1];\nh q[0];\ncp(pi/2) q[0],q[1];\nh q[1];\n"}
+{"id": "p10", "kind": "variant", "note": "hand-built: SWAP, H, CP(-pi/2), H", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nswap q[0],q[1];\nh q[0];\ncp(-pi/2) q[0],q[1];\nh q[1];\n"}
+{"id": "p11", "kind": "mutant", "note": "target and a control swapped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nccx q[0],q[2],q[1];\n"}
+{"id": "p11", "kind": "mutant", "note": "single-control CNOT", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncx q[0],q[2];\n"}
+{"id": "p11", "kind": "variant", "note": "textbook Clifford+T decomposition", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[2];\ncx q[1],q[2];\ntdg q[2];\ncx q[0],q[2];\nt q[2];\ncx q[1],q[2];\ntdg q[2];\ncx q[0],q[2];\nt q[1];\nt q[2];\nh q[2];\ncx q[0],q[1];\nt q[0];\ntdg q[1];\ncx q[0],q[1];\n"}
+{"id": "p12", "kind": "mutant", "note": "no measurements", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\ncx q[0],q[1];\n"}
+{"id": "p12", "kind": "mutant", "note": "only q[0] measured", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\ncx q[0],q[1];\nmeasure q[0] -> c[0];\n"}
+{"id": "p12", "kind": "mutant", "note": "measured before the CNOT (mid-circuit)", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\nmeasure q[0] -> c[0];\ncx q[0],q[1];\nmeasure q[1] -> c[1];\n"}
+{"id": "p12", "kind": "variant", "note": "classical bits in the other order", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\ncx q[0],q[1];\nmeasure q[0] -> c[1];\nmeasure q[1] -> c[0];\n"}
+{"id": "p13", "kind": "mutant", "note": "measured anyway", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncreg c[2];\nh q[0];\nx q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n"}
+{"id": "p13", "kind": "mutant", "note": "qubits swapped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nx q[0];\nh q[1];\n"}
+{"id": "p13", "kind": "variant", "note": "gates in the other order", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nx q[1];\nh q[0];\n"}
+{"id": "p14", "kind": "mutant", "note": "uses the SWAP gate, which the task disallows", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nswap q[0],q[1];\n"}
+{"id": "p14", "kind": "mutant", "note": "only two CNOTs", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncx q[0],q[1];\ncx q[1],q[0];\n"}
+{"id": "p14", "kind": "variant", "note": "mirror-image CNOT order", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncx q[1],q[0];\ncx q[0],q[1];\ncx q[1],q[0];\n"}
+{"id": "p15", "kind": "mutant", "note": "one control dropped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\nccx q[0],q[1],q[3];\n"}
+{"id": "p15", "kind": "mutant", "note": "target is q[2], not q[3]", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[4];\nc3x q[0],q[1],q[3],q[2];\n"}
+{"id": "p15", "kind": "variant", "note": "Qiskit mcx", "code": "from qiskit import QuantumCircuit\nqc = QuantumCircuit(4)\nqc.mcx([0, 1, 2], 3)\n"}
+{"id": "p16", "kind": "mutant", "note": "big-endian reading: marks |011>", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[2];\nh q[0];\nccx q[1],q[2],q[0];\nh q[0];\nx q[2];\n"}
+{"id": "p16", "kind": "mutant", "note": "bit-flip oracle instead of phase oracle", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[0];\nccx q[0],q[1],q[2];\nx q[0];\n"}
+{"id": "p16", "kind": "variant", "note": "CCZ built around a different target qubit", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[0];\nh q[1];\nccx q[0],q[2],q[1];\nh q[1];\nx q[0];\n"}
+{"id": "p17", "kind": "mutant", "note": "X layer missing", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\nh q[1];\ncz q[0],q[1];\nh q[0];\nh q[1];\n"}
+{"id": "p17", "kind": "mutant", "note": "closing Hadamards missing", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\nh q[1];\nx q[0];\nx q[1];\ncz q[0],q[1];\nx q[0];\nx q[1];\n"}
+{"id": "p17", "kind": "variant", "note": "Z on each qubit plus CZ in place of the X sandwich", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\nh q[1];\nz q[0];\nz q[1];\ncz q[0],q[1];\nh q[0];\nh q[1];\n"}
+{"id": "p18", "kind": "mutant", "note": "GHZ instead", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[0];\ncx q[0],q[1];\ncx q[1],q[2];\n"}
+{"id": "p18", "kind": "mutant", "note": "two excitations instead of one: (|011> + |101> + |110>)/sqrt(3)", "code": "from qiskit import QuantumCircuit\nimport numpy as np\nfrom qiskit.circuit.library import StatePreparation\nv = np.zeros(8); v[[3, 5, 6]] = 1 / np.sqrt(3)\nqc = QuantumCircuit(3)\nqc.append(StatePreparation(v), [0, 1, 2])\n"}
+{"id": "p18", "kind": "variant", "note": "explicit gates: RY, CH, CX, then a 00-controlled X", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nry(1.9106332362490186) q[0];\nch q[0],q[1];\ncx q[1],q[0];\nx q[0];\nx q[1];\nccx q[0],q[1],q[2];\nx q[0];\nx q[1];\n"}
+{"id": "p19", "kind": "mutant", "note": "inverse QFT instead", "code": "from qiskit import QuantumCircuit\nfrom qiskit.circuit.library import QFTGate\nqc = QuantumCircuit(3)\nqc.append(QFTGate(3).inverse(), [0, 1, 2])\n"}
+{"id": "p19", "kind": "mutant", "note": "final reversal missing", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[2];\ncp(pi/2) q[1],q[2];\ncp(pi/4) q[0],q[2];\nh q[1];\ncp(pi/2) q[0],q[1];\nh q[0];\n"}
+{"id": "p19", "kind": "variant", "note": "hand-built with the final SWAP", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[2];\ncp(pi/2) q[1],q[2];\ncp(pi/4) q[0],q[2];\nh q[1];\ncp(pi/2) q[0],q[1];\nh q[0];\nswap q[0],q[2];\n"}
+{"id": "p20", "kind": "mutant", "note": "sign flipped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nrzz(-pi/4) q[0],q[1];\n"}
+{"id": "p20", "kind": "mutant", "note": "controlled phase instead", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncp(pi/4) q[0],q[1];\n"}
+{"id": "p20", "kind": "variant", "note": "CNOT-RZ-CNOT", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncx q[0],q[1];\nrz(pi/4) q[1];\ncx q[0],q[1];\n"}
+{"id": "p21", "kind": "mutant", "note": "phi and lambda swapped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nu3(pi/2,pi/8,pi/4) q[0];\n"}
+{"id": "p21", "kind": "mutant", "note": "theta halved", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nu3(pi/4,pi/4,pi/8) q[0];\n"}
+{"id": "p21", "kind": "variant", "note": "RZ(lambda), RY(theta), RZ(phi), in circuit order", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(pi/8) q[0];\nry(pi/2) q[0];\nrz(pi/4) q[0];\n"}
+{"id": "p22", "kind": "mutant", "note": "control and target swapped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nch q[0],q[1];\n"}
+{"id": "p22", "kind": "mutant", "note": "uncontrolled H", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\n"}
+{"id": "p22", "kind": "variant", "note": "RY(pi/4), CNOT, RY(-pi/4) on the target", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nry(pi/4) q[0];\ncx q[1],q[0];\nry(-pi/4) q[0];\n"}
+{"id": "p23", "kind": "mutant", "note": "big-endian reading: |011>", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[0];\nx q[1];\n"}
+{"id": "p23", "kind": "mutant", "note": "only one bit set", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[2];\n"}
+{"id": "p23", "kind": "variant", "note": "same gates, other order", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[2];\nx q[1];\n"}
+{"id": "p24", "kind": "mutant", "note": "plain Toffoli: fires on q[0]=1, q[1]=1", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nccx q[0],q[1],q[2];\n"}
+{"id": "p24", "kind": "mutant", "note": "wrong control negated: fires on q[0]=0, q[1]=1", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nx q[0];\nccx q[0],q[1],q[2];\nx q[0];\n"}
+{"id": "p24", "kind": "variant", "note": "Qiskit ctrl_state='01' (little-endian: q[0]=1, q[1]=0)", "code": "from qiskit import QuantumCircuit\nfrom qiskit.circuit.library import XGate\nqc = QuantumCircuit(3)\nqc.append(XGate().control(2, ctrl_state='01'), [0, 1, 2])\n"}
+{"id": "p25", "kind": "mutant", "note": "S instead of S-dagger", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ns q[0];\n"}
+{"id": "p25", "kind": "mutant", "note": "T-dagger instead", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\ntdg q[0];\n"}
+{"id": "p25", "kind": "variant", "note": "RZ(-pi/2), same up to global phase", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrz(-pi/2) q[0];\n"}
+{"id": "p26", "kind": "mutant", "note": "|+> instead", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nh q[0];\n"}
+{"id": "p26", "kind": "mutant", "note": "(|0> - i|1>)/sqrt(2): S-dagger instead of S", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nh q[0];\nsdg q[0];\n"}
+{"id": "p26", "kind": "variant", "note": "RX(-pi/2) from |0>", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[1];\nrx(-pi/2) q[0];\n"}
+{"id": "p27", "kind": "mutant", "note": "Toffoli without the Hadamards", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nccx q[0],q[1],q[2];\n"}
+{"id": "p27", "kind": "mutant", "note": "only CZ on two qubits", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncz q[0],q[1];\n"}
+{"id": "p27", "kind": "variant", "note": "same gate built around q[0] (CCZ is symmetric)", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nh q[0];\nccx q[1],q[2],q[0];\nh q[0];\n"}
+{"id": "p28", "kind": "mutant", "note": "big-endian reading of s", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nz q[0];\nz q[1];\n"}
+{"id": "p28", "kind": "mutant", "note": "CZ instead of two Zs", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncz q[1],q[2];\n"}
+{"id": "p28", "kind": "variant", "note": "RZ(pi) on each, same up to global phase", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nrz(pi) q[1];\nrz(pi) q[2];\n"}
+{"id": "p29", "kind": "mutant", "note": "swaps q[0] and q[1]", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nswap q[0],q[1];\n"}
+{"id": "p29", "kind": "mutant", "note": "swaps q[1] and q[2]", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\nswap q[1],q[2];\n"}
+{"id": "p29", "kind": "variant", "note": "three CNOTs", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[3];\ncx q[0],q[2];\ncx q[2],q[0];\ncx q[0],q[2];\n"}
+{"id": "p30", "kind": "mutant", "note": "control and target swapped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncry(pi/2) q[1],q[0];\n"}
+{"id": "p30", "kind": "mutant", "note": "sign flipped", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\ncry(-pi/2) q[0],q[1];\n"}
+{"id": "p30", "kind": "variant", "note": "RY(pi/4), CX, RY(-pi/4), CX", "code": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nry(pi/4) q[1];\ncx q[0],q[1];\nry(-pi/4) q[1];\ncx q[0],q[1];\n"}
