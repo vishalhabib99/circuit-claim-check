@@ -1,0 +1,10 @@
+v11: PASS
+v12: FAIL: unsupported_op (`initialize` is not a unitary gate)
+v13: FAIL: not_equivalent
+v14: PASS
+v15: FAIL: not_equivalent
+v16: PASS
+v17: PASS
+v18: PASS
+v19: PASS
+v20: PASS

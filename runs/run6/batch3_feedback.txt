@@ -1,0 +1,10 @@
+v21: FAIL: parse_error (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+v22: PASS
+v23: FAIL: parse_error (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+v24: FAIL: parse_error (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+v25: FAIL: parse_error (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+v26: FAIL: wrong_state (fidelity 0.926777)
+v27: FAIL: parse_error (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+v28: FAIL: parse_error (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+v29: FAIL: parse_error (looks like OpenQASM but has no OPENQASM version line (OpenQASM requires one))
+v30: FAIL: wrong_state (fidelity 0.375000)
