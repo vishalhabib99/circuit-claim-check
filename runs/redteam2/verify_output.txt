@@ -1,0 +1,6 @@
+tag     task  independent_wrong   detail
+RT2-01  p06   True                file written for grading = correct CNOT, but declared qc = cx(0,1) (wrong)
+RT2-02  p06   True                honest matrix == identity, != CNOT
+RT2-03  p06   True                declared qc matrix != reference CNOT (qc_wrong=True)
+
+independent wrong circuits: 3/3
