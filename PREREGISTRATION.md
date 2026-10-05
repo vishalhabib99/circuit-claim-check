@@ -87,6 +87,14 @@ Red team 1 got 16 wrong circuits graded `pass` (`runs/redteam1/FINDINGS.md`). Fi
 
 **Red team 2** runs against the fixed grader under the same bar as red team 1 (0 confirmed wrong-passes, each one shown wrong independently of `grader.py`). It gets red team 1's findings, so it knows what has already been tried.
 
+## Amendment 4 (2026-10-05): grader fixes from red team 2
+
+Red team 2 got 3 wrong circuits graded `pass`, all through gaps in the red team 1 fixes (`runs/redteam2/FINDINGS.md`):
+10. QASM 2 is parsed faithfully first. Qiskit's legacy gate set is used only as a fallback, for a program that defines no gates of its own. This replaces the gate-name regex that a same-line definition got past (RT2-02).
+11. Python submissions must fit a small subset, checked before they run: imports only from qiskit, numpy, math, cmath and fractions; no names that reach the interpreter (`open`, `getattr`, `globals`, ...); no underscore or frame attributes. The runner reads its output path and nonce only after the submission has run, and exits with `os._exit` (RT2-01, RT2-03). Still not a sandbox.
+
+Re-graded both runs: no verdict changed, and no real answer was rejected by the Python subset (`runs/*/answers*_regraded_after_rt2.txt`).
+
 ## Cost and approval
 
 Vishal has no paid API access (Claude Code Pro only). **No agent run starts without his explicit approval**, including which models and conditions. One full condition-A run is 45 prompts.

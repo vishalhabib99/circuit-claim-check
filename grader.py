@@ -24,6 +24,7 @@ Grading is exact, no model involved:
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import os
 import re
@@ -116,7 +117,51 @@ def _looks_like_qasm(text: str) -> bool:
     return first.startswith(("include ", "qreg ", "qubit[", "qubit ", "gate ", "creg "))
 
 
+# Python submissions must stay inside a small subset, checked before they run.
+# Red team 2 showed that a submission sharing the runner's interpreter can walk
+# the call stack (RT2-01) or register exit handlers (RT2-03) to swap the graded
+# circuit. Blocking imports outside this list, names that reach the
+# interpreter, and underscore/frame attributes closes those routes. It's still
+# not a sandbox; see README.
+PY_ALLOWED_IMPORTS = {"qiskit", "math", "cmath", "numpy", "fractions"}
+PY_DENIED_NAMES = {
+    "open", "exec", "eval", "compile", "__import__", "getattr", "setattr", "delattr",
+    "globals", "locals", "vars", "breakpoint", "input", "memoryview", "help", "exit", "quit",
+}
+PY_DENIED_ATTRS = {
+    "f_back", "f_locals", "f_globals", "f_builtins", "f_code", "gi_frame", "cr_frame", "ag_frame",
+    "tb_frame", "tb_next", "gi_code", "co_code",
+    "sys", "os", "atexit", "threading", "inspect", "builtins", "importlib", "subprocess", "ctypes",
+    "gc", "signal", "io", "pathlib", "shutil", "tempfile", "pickle", "marshal", "multiprocessing",
+    "socket", "runpy", "weakref", "traceback", "faulthandler", "resource",
+}
+
+
+def _check_python_subset(code: str) -> None:
+    try:
+        tree = ast.parse(code)
+    except SyntaxError as e:
+        raise GradeError("parse_error", f"Python: SyntaxError: {e.msg}") from e
+    for node in ast.walk(tree):
+        bad = None
+        if isinstance(node, ast.Import):
+            bad = next((a.name for a in node.names if a.name.split(".")[0] not in PY_ALLOWED_IMPORTS), None)
+        elif isinstance(node, ast.ImportFrom):
+            root = (node.module or "").split(".")[0]
+            if node.level or root not in PY_ALLOWED_IMPORTS:
+                bad = node.module or "relative import"
+            else:
+                bad = next((a.name for a in node.names if a.name.startswith("_") or a.name in PY_DENIED_ATTRS or a.name == "*"), None)
+        elif isinstance(node, ast.Name) and (node.id in PY_DENIED_NAMES or node.id.startswith("__")):
+            bad = node.id
+        elif isinstance(node, ast.Attribute) and (node.attr.startswith("_") or node.attr in PY_DENIED_ATTRS):
+            bad = f".{node.attr}"
+        if bad:
+            raise GradeError("disallowed_python", f"`{bad}` is outside the allowed Python subset (imports: {sorted(PY_ALLOWED_IMPORTS)})")
+
+
 def _run_python(code: str) -> QuantumCircuit:
+    _check_python_subset(code)
     # The output goes to a second temp dir outside the submission's working directory.
     with tempfile.TemporaryDirectory() as tmp, tempfile.TemporaryDirectory() as out_tmp:
         src = Path(tmp) / "submission.py"
