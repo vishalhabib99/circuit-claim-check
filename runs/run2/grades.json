@@ -1,0 +1,628 @@
+{
+  "results": [
+    {
+      "id": "p01",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "basic"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p02",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 1.0,
+      "claimed_success": true,
+      "traps": [
+        "endianness"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p03",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "relative_phase"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p04",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "global_phase"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p05",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p06",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "control_target"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p07",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "basic"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p08",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "relative_phase",
+        "param_rotation"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p09",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "qft"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p10",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "qft"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p11",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "multi_controlled"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p12",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "measurement"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p13",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "measurement"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p14",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "gate_set"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p15",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: AttributeError: 'QuantumCircuit' object has no attribute 'mct'. Did you mean: 'mcp'?",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "multi_controlled"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p16",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "grover_oracle",
+        "endianness"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p17",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "grover_oracle",
+        "global_phase"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "p18",
+      "passed": false,
+      "reason": "wrong_state",
+      "detail": "fidelity 0.055556",
+      "fidelity": 0.05555555555555552,
+      "claimed_success": false,
+      "traps": [
+        "basic"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "p19",
+      "passed": false,
+      "reason": "not_equivalent",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "qft"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "p20",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "p21",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p22",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "control_target"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p23",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 1.0,
+      "claimed_success": true,
+      "traps": [
+        "endianness"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p24",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "multi_controlled",
+        "endianness"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "p25",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "global_phase"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "p26",
+      "passed": true,
+      "reason": "pass",
+      "detail": "fidelity 1.000000",
+      "fidelity": 0.9999999999999996,
+      "claimed_success": true,
+      "traps": [
+        "relative_phase"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p27",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "multi_controlled",
+        "relative_phase"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "p28",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "grover_oracle",
+        "endianness"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "p29",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "control_target"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "p30",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "control_target",
+        "param_rotation"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "b01",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "basic",
+        "relative_phase"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "b02",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "endianness"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "b03",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "global_phase"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "b04",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation"
+      ],
+      "difficulty": "easy"
+    },
+    {
+      "id": "b05",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "control_target"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "b06",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "relative_phase",
+        "param_rotation"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "b07",
+      "passed": true,
+      "reason": "pass",
+      "detail": "",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "qft"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "b08",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "multi_controlled"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "b09",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "measurement"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "b10",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "measurement",
+        "relative_phase"
+      ],
+      "difficulty": "medium"
+    },
+    {
+      "id": "b11",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": false,
+      "traps": [
+        "grover_oracle",
+        "endianness"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "b12",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "gate_set",
+        "control_target"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "b13",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "param_rotation"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "b14",
+      "passed": false,
+      "reason": "parse_error",
+      "detail": "Python: SyntaxError: invalid syntax",
+      "fidelity": null,
+      "claimed_success": true,
+      "traps": [
+        "multi_controlled",
+        "endianness"
+      ],
+      "difficulty": "hard"
+    },
+    {
+      "id": "b15",
+      "passed": false,
+      "reason": "wrong_state",
+      "detail": "fidelity 0.814270",
+      "fidelity": 0.8142696805273543,
+      "claimed_success": false,
+      "traps": [
+        "basic",
+        "endianness"
+      ],
+      "difficulty": "hard"
+    }
+  ],
+  "summary": {
+    "overall": {
+      "passed": 28,
+      "total": 45
+    },
+    "by_trap": {
+      "basic": {
+        "passed": 2,
+        "total": 5
+      },
+      "control_target": {
+        "passed": 4,
+        "total": 6
+      },
+      "endianness": {
+        "passed": 5,
+        "total": 9
+      },
+      "gate_set": {
+        "passed": 1,
+        "total": 2
+      },
+      "global_phase": {
+        "passed": 3,
+        "total": 4
+      },
+      "grover_oracle": {
+        "passed": 3,
+        "total": 4
+      },
+      "measurement": {
+        "passed": 2,
+        "total": 4
+      },
+      "multi_controlled": {
+        "passed": 3,
+        "total": 6
+      },
+      "param_rotation": {
+        "passed": 5,
+        "total": 8
+      },
+      "qft": {
+        "passed": 3,
+        "total": 4
+      },
+      "relative_phase": {
+        "passed": 4,
+        "total": 7
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "passed": 8,
+        "total": 12
+      },
+      "hard": {
+        "passed": 6,
+        "total": 13
+      },
+      "medium": {
+        "passed": 14,
+        "total": 20
+      }
+    },
+    "claimed_success_but_failed": {
+      "count": 13,
+      "of_claimed": 41
+    }
+  }
+}
