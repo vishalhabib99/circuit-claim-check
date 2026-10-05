@@ -34,6 +34,8 @@ from pathlib import Path
 
 import numpy as np
 from qiskit import QuantumCircuit, qasm2, qasm3, qpy
+from qiskit.circuit import ControlFlowOp, Gate
+from qiskit.circuit.library import get_standard_gate_name_mapping
 from qiskit.quantum_info import Operator, Statevector, state_fidelity
 
 FIDELITY_TOL = 1e-6
@@ -46,6 +48,7 @@ IGNORED_OPS = {"barrier", "delay"}
 # them are allowed if they start in |0>, end in |0> for every input, and are
 # never measured. Capped so the full unitary stays small enough to build.
 MAX_ANCILLAS = 3
+STANDARD_GATES = get_standard_gate_name_mapping()
 LEAK_TOL = 1e-6
 
 
@@ -113,6 +116,38 @@ def _run_python(code: str) -> QuantumCircuit:
         return circuits[0]
 
 
+def _check_only_gates(qc: QuantumCircuit, top: bool = True, depth: int = 0) -> None:
+    """Reject anything that isn't a unitary gate, at any depth.
+
+    Top level may also hold final measurements, barriers and delays. Inside a
+    gate's definition only gates and barriers are allowed. This catches a reset
+    hidden in `initialize` or in a custom instruction, control flow such as
+    `box`, and classical-variable ops (red team 1: A01, A02, W1, W3, W4).
+    """
+    if depth > 50:
+        raise GradeError("unsupported_op", "gate definitions nested too deeply")
+    if top and getattr(qc, "num_vars", 0):
+        raise GradeError("unsupported_op", "circuit uses classical variables")
+    for inst in qc.data:
+        op = inst.operation
+        if op.name in IGNORED_OPS:
+            continue
+        if top and op.name == "measure":
+            continue
+        if isinstance(op, ControlFlowOp):
+            raise GradeError("unsupported_op", f"control flow `{op.name}` can't be graded as a unitary")
+        if not isinstance(op, Gate):
+            raise GradeError("unsupported_op", f"`{op.name}` is not a unitary gate" + ("" if top else " (inside a gate definition)"))
+        defn = op.definition
+        if defn is not None and not _is_standard_gate(op):
+            _check_only_gates(defn, top=False, depth=depth + 1)
+
+
+def _is_standard_gate(op) -> bool:
+    std = STANDARD_GATES.get(op.name)
+    return std is not None and type(op) is type(std)
+
+
 def _final_measure_split(qc: QuantumCircuit) -> tuple[QuantumCircuit, set[int]]:
     """Return (circuit without final measurements, qubits measured at the end).
 
@@ -164,6 +199,7 @@ def grade_one(task: dict, code: str) -> tuple[bool, str, str, float | None]:
     if n_anc > MAX_ANCILLAS:
         return False, "too_many_ancillas", f"{n_anc} extra qubits; at most {MAX_ANCILLAS} allowed", None
     try:
+        _check_only_gates(sub)
         sub_u, measured = _final_measure_split(sub)
     except GradeError as e:
         return False, e.reason, e.detail, None
