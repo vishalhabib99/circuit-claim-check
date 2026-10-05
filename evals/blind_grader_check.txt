@@ -1,0 +1,51 @@
+# First grader run on the blind set. Grader at f467cea, blind set at 8dcb32a. 2026-10-05T01:50Z
+killed        b01  wrong_state              (|01> + |10>)/sqrt(2): sign missing
+killed        b01  wrong_state              (|00> - |11>)/sqrt(2)
+variant ok    b01  X, H, X, CNOT
+killed        b02  wrong_state              big-endian reading: flips q[0]
+killed        b02  wrong_state              flips q[1]
+variant ok    b02  HZH on q[2]
+killed        b03  not_equivalent           half the angle
+killed        b03  not_equivalent           RY(pi) is Y up to phase, not X
+variant ok    b03  plain X
+killed        b04  not_equivalent           sign flipped
+killed        b04  not_equivalent           wrong axis
+variant ok    b04  U3(theta, -pi/2, pi/2) equals RX(theta)
+killed        b05  not_equivalent           control and target swapped
+killed        b05  not_equivalent           wrong target
+variant ok    b05  H-CZ-H on the target
+killed        b06  not_equivalent           CRZ(pi/4): relative phase is wrong
+killed        b06  not_equivalent           controlled-T-dagger
+variant ok    b06  CP is symmetric
+killed        b07  not_equivalent           forward QFT instead
+killed        b07  not_equivalent           inverse of the QFT without its final reversal
+variant ok    b07  hand-built: SWAP first, then the reversed, conjugated QFT
+killed        b08  not_equivalent           target is q[3], not q[0]
+killed        b08  not_equivalent           one control dropped
+variant ok    b08  Qiskit mcx
+killed        b09  missing_measurement      q[2] not measured
+killed        b09  missing_measurement      no measurements
+variant ok    b09  measure q -> c in one statement
+killed        b10  measurement_not_allowed  measured
+killed        b10  wrong_state              forgot the X: |+>
+variant ok    b10  H then Z
+killed        b11  not_equivalent           big-endian reading: marks |110>
+killed        b11  not_equivalent           no X: marks |111>
+variant ok    b11  CCZ built around q[0]
+killed        b12  disallowed_gate          uses CZ directly, which the task disallows
+killed        b12  not_equivalent           Hadamards on the control instead of the target
+variant ok    b12  conjugate the other qubit (CZ is symmetric)
+killed        b13  not_equivalent           phi and lambda swapped
+killed        b13  not_equivalent           theta sign flipped
+variant ok    b13  RZ(lambda), RY(theta), RZ(phi), in circuit order
+killed        b14  not_equivalent           wrong control negated
+killed        b14  not_equivalent           no negation
+variant ok    b14  Qiskit ctrl_state='10' over controls [q[1], q[2]]
+killed        b15  wrong_state              uniform over all four basis states
+killed        b15  wrong_state              (|00> + |10> + |11>)/sqrt(3)
+variant ok    b15  same state times a global phase of -1
+
+references pass: 15/15
+mutants killed:  30/30
+variants pass:   15/15
+exit: 0

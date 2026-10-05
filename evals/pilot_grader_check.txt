@@ -1,0 +1,100 @@
+# Grader validation on the pilot set. Grader at f467cea. 2026-10-05T01:50Z
+killed        p01  wrong_state              only H, no entangling gate
+killed        p01  wrong_state              extra Z gives (|00> - |11>)/sqrt(2)
+variant ok    p01  H on q[1], CNOT q[1]->q[0]
+killed        p02  wrong_state              big-endian reading: flips q[1]
+killed        p02  wrong_state              flips both
+variant ok    p02  HZH = X on q[0]
+killed        p03  wrong_state              |+> instead of |->
+killed        p03  wrong_state              (|0> + i|1>)/sqrt(2) instead
+variant ok    p03  H then Z
+killed        p04  not_equivalent           quarter turn: RZ(pi/2) is S up to phase, not Z
+killed        p04  not_equivalent           wrong axis
+variant ok    p04  plain Z gate (differs from RZ(pi) only by global phase)
+variant ok    p04  RZ(-pi), same up to global phase
+killed        p05  not_equivalent           sign flipped
+killed        p05  not_equivalent           wrong axis
+variant ok    p05  U3(pi/3, 0, 0) equals RY(pi/3)
+killed        p06  not_equivalent           control and target swapped
+killed        p06  not_equivalent           SWAP instead
+variant ok    p06  H-CZ-H on the target
+variant ok    p06  reversed CNOT conjugated by Hadamards
+killed        p07  wrong_state              last CNOT missing
+killed        p07  wrong_state              extra S: (|000> + i|111>)/sqrt(2)
+variant ok    p07  fan-out from q[0], other order
+killed        p08  not_equivalent           CRZ(pi/2): the target's global phase becomes a relative phase
+killed        p08  not_equivalent           sign flipped
+variant ok    p08  CP is symmetric in its qubits
+variant ok    p08  CU1 is the legacy name for CP
+killed        p09  not_equivalent           inverse QFT instead
+killed        p09  not_equivalent           final swap missing
+variant ok    p09  hand-built: H, CP, H, SWAP
+killed        p10  not_equivalent           forward QFT instead
+killed        p10  not_equivalent           phase sign not flipped
+variant ok    p10  hand-built: SWAP, H, CP(-pi/2), H
+killed        p11  not_equivalent           target and a control swapped
+killed        p11  not_equivalent           single-control CNOT
+variant ok    p11  textbook Clifford+T decomposition
+killed        p12  missing_measurement      no measurements
+killed        p12  missing_measurement      only q[0] measured
+killed        p12  mid_circuit_measurement  measured before the CNOT (mid-circuit)
+variant ok    p12  classical bits in the other order
+killed        p13  measurement_not_allowed  measured anyway
+killed        p13  wrong_state              qubits swapped
+variant ok    p13  gates in the other order
+killed        p14  disallowed_gate          uses the SWAP gate, which the task disallows
+killed        p14  not_equivalent           only two CNOTs
+variant ok    p14  mirror-image CNOT order
+killed        p15  not_equivalent           one control dropped
+killed        p15  not_equivalent           target is q[2], not q[3]
+variant ok    p15  Qiskit mcx
+killed        p16  not_equivalent           big-endian reading: marks |011>
+killed        p16  not_equivalent           bit-flip oracle instead of phase oracle
+variant ok    p16  CCZ built around a different target qubit
+killed        p17  not_equivalent           X layer missing
+killed        p17  not_equivalent           closing Hadamards missing
+variant ok    p17  Z on each qubit plus CZ in place of the X sandwich
+killed        p18  wrong_state              GHZ instead
+killed        p18  wrong_state              two excitations instead of one: (|011> + |101> + |110>)/sqrt(3)
+variant ok    p18  explicit gates: RY, CH, CX, then a 00-controlled X
+killed        p19  not_equivalent           inverse QFT instead
+killed        p19  not_equivalent           final reversal missing
+variant ok    p19  hand-built with the final SWAP
+killed        p20  not_equivalent           sign flipped
+killed        p20  not_equivalent           controlled phase instead
+variant ok    p20  CNOT-RZ-CNOT
+killed        p21  not_equivalent           phi and lambda swapped
+killed        p21  not_equivalent           theta halved
+variant ok    p21  RZ(lambda), RY(theta), RZ(phi), in circuit order
+killed        p22  not_equivalent           control and target swapped
+killed        p22  not_equivalent           uncontrolled H
+variant ok    p22  RY(pi/4), CNOT, RY(-pi/4) on the target
+killed        p23  wrong_state              big-endian reading: |011>
+killed        p23  wrong_state              only one bit set
+variant ok    p23  same gates, other order
+killed        p24  not_equivalent           plain Toffoli: fires on q[0]=1, q[1]=1
+killed        p24  not_equivalent           wrong control negated: fires on q[0]=0, q[1]=1
+variant ok    p24  Qiskit ctrl_state='01' (little-endian: q[0]=1, q[1]=0)
+killed        p25  not_equivalent           S instead of S-dagger
+killed        p25  not_equivalent           T-dagger instead
+variant ok    p25  RZ(-pi/2), same up to global phase
+killed        p26  wrong_state              |+> instead
+killed        p26  wrong_state              (|0> - i|1>)/sqrt(2): S-dagger instead of S
+variant ok    p26  RX(-pi/2) from |0>
+killed        p27  not_equivalent           Toffoli without the Hadamards
+killed        p27  not_equivalent           only CZ on two qubits
+variant ok    p27  same gate built around q[0] (CCZ is symmetric)
+killed        p28  not_equivalent           big-endian reading of s
+killed        p28  not_equivalent           CZ instead of two Zs
+variant ok    p28  RZ(pi) on each, same up to global phase
+killed        p29  not_equivalent           swaps q[0] and q[1]
+killed        p29  not_equivalent           swaps q[1] and q[2]
+variant ok    p29  three CNOTs
+killed        p30  not_equivalent           control and target swapped
+killed        p30  not_equivalent           sign flipped
+variant ok    p30  RY(pi/4), CX, RY(-pi/4), CX
+
+references pass: 30/30
+mutants killed:  61/61
+variants pass:   33/33
+exit: 0
